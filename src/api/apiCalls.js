@@ -5,7 +5,7 @@ export const signup = (user) => {
 }
 
 export const login = (user) => {
-  return axios.post('/api/1,0/auth', {}, { auth: user })
+  return axios.post('/api/1.0/auth', {}, { auth: user })
 }
 
 export const changeHeaderLanguage = (language) => {

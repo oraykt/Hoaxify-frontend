@@ -1,23 +1,41 @@
 import React from 'react'
 import { login } from '../api/apiCalls'
 import Input from '../components/Input'
+import ButtonWithProgress from '../components/ButtonWithProgress'
 import { withTranslation } from 'react-i18next'
+import axios from 'axios'
 
 class UserLoginPage extends React.Component {
   state = {
     username: null,
     password: null,
     pendingApiCall: false,
-    errors: {},
+    error: null,
+  }
+
+  componentDidMount() {
+    axios.interceptors.request.use((request) => {
+      this.setState({ pendingApiCall: true })
+      return request
+    })
+
+    axios.interceptors.response.use(
+      (response) => {
+        this.setState({ pendingApiCall: false })
+        return response
+      },
+      (error) => {
+        this.setState({ pendingApiCall: false })
+        throw error
+      }
+    )
   }
 
   onChange = (event) => {
     const { name, value } = event.target
-    const errors = { ...this.state.errors }
-    errors[name] = undefined
     this.setState({
       [name]: value,
-      errors,
+      error: false,
     })
   }
 
@@ -29,52 +47,46 @@ class UserLoginPage extends React.Component {
         username,
         password,
       }
-      this.setState({ pendingApiCall: true })
-      const response = await login(user)
-      response.status === 200 && this.setState({ pendingApiCall: false })
-    } catch (error) {
-      if (error.response.data.validationErrors) {
-        this.setState({
-          errors: error.response.data.validationErrors,
-          pendingApiCall: false,
-        })
-      }
+      this.setState({ error: null })
+      await login(user)
+    } catch (apiError) {
+      this.setState({
+        error: apiError.response.data.message,
+      })
     }
   }
 
   render() {
-    const { pendingApiCall, errors } = this.state
-    const { username, password } = errors
+    const { pendingApiCall, error, username, password } = this.state
     const { t: translate } = this.props
+
+    const buttonEnabled = username && password
+
     return (
       <div className='container'>
         <form>
           <h1 className='text-center'>{translate('Login')}</h1>
+          {error && <div className='alert alert-danger'>{error}</div>}
+
           <Input
             name='username'
             type='text'
             label={translate('Username')}
-            error={username}
             onChange={this.onChange}
           />
           <Input
             name='password'
             type='password'
             label={translate('Password')}
-            error={translate(password)}
             onChange={this.onChange}
           />
           <div className='text-center'>
-            <button
-              className='btn btn-primary'
+            <ButtonWithProgress
               onClick={this.onClickLogin}
-              disabled={pendingApiCall || this.state.password === null}
-            >
-              {pendingApiCall && (
-                <span className='spinner-border spinner-border-sm'></span>
-              )}{' '}
-              {translate('Login')}
-            </button>
+              pendingApiCall={pendingApiCall}
+              disabled={!buttonEnabled || pendingApiCall}
+              text={translate('Login')}
+            />
           </div>
         </form>
       </div>

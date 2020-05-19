@@ -6,7 +6,7 @@ import LanguageSelector from './components/LanguageSelector'
 const App = () => {
   return (
     <div className='container'>
-      <UserLoginPage />
+      <UserSignupPage />
       <LanguageSelector />
     </div>
   )
