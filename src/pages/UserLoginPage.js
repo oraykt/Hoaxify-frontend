@@ -3,32 +3,13 @@ import { login } from '../api/apiCalls'
 import Input from '../components/Input'
 import ButtonWithProgress from '../components/ButtonWithProgress'
 import { withTranslation } from 'react-i18next'
-import axios from 'axios'
+import { withApiProgress } from '../shared/ApiProgress'
 
 class UserLoginPage extends React.Component {
   state = {
     username: null,
     password: null,
-    pendingApiCall: false,
     error: null,
-  }
-
-  componentDidMount() {
-    axios.interceptors.request.use((request) => {
-      this.setState({ pendingApiCall: true })
-      return request
-    })
-
-    axios.interceptors.response.use(
-      (response) => {
-        this.setState({ pendingApiCall: false })
-        return response
-      },
-      (error) => {
-        this.setState({ pendingApiCall: false })
-        throw error
-      }
-    )
   }
 
   onChange = (event) => {
@@ -57,8 +38,8 @@ class UserLoginPage extends React.Component {
   }
 
   render() {
-    const { pendingApiCall, error, username, password } = this.state
-    const { t: translate } = this.props
+    const { error, username, password } = this.state
+    const { t: translate, pendingApiCall } = this.props
 
     const buttonEnabled = username && password
 
@@ -94,4 +75,6 @@ class UserLoginPage extends React.Component {
   }
 }
 
-export default withTranslation()(UserLoginPage)
+const UserLoginPageWithTranslation = withTranslation()(UserLoginPage)
+
+export default withApiProgress(UserLoginPageWithTranslation, '/api/1.0/auth')
