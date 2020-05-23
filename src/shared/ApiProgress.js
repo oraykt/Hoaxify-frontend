@@ -14,12 +14,12 @@ export const withApiProgress = (WrappedComponent, apiPath) => {
     }
 
     componentDidMount() {
-      axios.interceptors.request.use((request) => {
+      this.requestIntercepter = axios.interceptors.request.use((request) => {
         this.updateForProgress(request.url, true)
         return request
       })
 
-      axios.interceptors.response.use(
+      this.responseIntercepter = axios.interceptors.response.use(
         (response) => {
           this.updateForProgress(response.config.url, false)
           return response
@@ -29,6 +29,11 @@ export const withApiProgress = (WrappedComponent, apiPath) => {
           throw error
         }
       )
+    }
+
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.requestIntercepter)
+      axios.interceptors.response.eject(this.responseIntercepter)
     }
 
     updateForProgress(url, inProgress) {
