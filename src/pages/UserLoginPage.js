@@ -28,8 +28,10 @@ class UserLoginPage extends React.Component {
         username,
         password,
       }
+      const { push } = this.props.history
       this.setState({ error: null })
       await login(user)
+      push('/')
     } catch (apiError) {
       this.setState({
         error: apiError.response.data.message,
