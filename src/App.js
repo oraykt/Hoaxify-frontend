@@ -1,11 +1,26 @@
 import React from 'react'
-import Registration from './container/Registration'
 import LanguageSelector from './components/LanguageSelector'
+import HomePage from './pages/HomePage'
+import UserPage from './pages/UserPage'
+import UserLoginPage from './pages/UserLoginPage'
+import UserSignupPage from './pages/UserSignupPage'
+
+import { HashRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import TopBar from './components/TopBar'
 
 const App = () => {
   return (
     <div className='container'>
-      <Registration />
+      <Router>
+        <TopBar />
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route exact path='/login' component={UserLoginPage} />
+          <Route exact path='/signup' component={UserSignupPage} />
+          <Route exact path='/user/:username' component={UserPage} />
+          <Redirect to='/' />
+        </Switch>
+      </Router>
       <LanguageSelector />
     </div>
   )
