@@ -6,6 +6,7 @@ i18n.use(initReactI18next).init({
     en: {
       translations: {
         Login: 'Login',
+        Logout: 'Logout',
         'Sign Up': 'Sign Up',
         Username: 'Username',
         'Display Name': 'Display Name',
@@ -17,6 +18,7 @@ i18n.use(initReactI18next).init({
     tr: {
       translations: {
         Login: 'Giriş yap',
+        Logout: 'Çıkış Yap',
         'Sign Up': 'Kayıt Ol',
         Username: 'Kullanıcı Adı',
         'Display Name': 'Görünen İsim',
@@ -28,6 +30,7 @@ i18n.use(initReactI18next).init({
     pl: {
       translations: {
         Login: 'Zaloguj sie',
+        Logout: 'Wyloguj',
         'Sign Up': 'Zapisz się',
         Username: 'Nazwa Użytkownika',
         'Display Name': 'Wyświetlana nazwa',

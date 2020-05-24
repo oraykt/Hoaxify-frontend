@@ -40,12 +40,14 @@ class UserSignupPage extends React.Component {
     try {
       event.preventDefault()
       const { username, displayName, password } = this.state
+      const { push } = this.props.history
       const user = {
         username,
         displayName,
         password,
       }
       await signup(user)
+      push('/login')
     } catch (error) {
       if (error.response.data.validationErrors) {
         this.setState({

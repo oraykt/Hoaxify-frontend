@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
-
+import ProfileCard from '../components/ProfileCard'
 const UserPage = () => {
   return (
     <Fragment>
-      <h1>User Page</h1>
+      <ProfileCard />
     </Fragment>
   )
 }
