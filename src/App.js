@@ -7,13 +7,14 @@ import UserSignupPage from './pages/UserSignupPage'
 
 import { HashRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import TopBar from './components/TopBar'
-import { Authentication } from './shared/AuthenticationContext'
+
+// import { Authentication } from './shared/AuthenticationContext'
 
 class App extends React.Component {
-  static contextType = Authentication
+  // static contextType = Authentication
 
   render() {
-    const { isLoggedIn } = this.context.state
+    const { isLoggedIn } = false
     return (
       <div className='container'>
         <Router>
