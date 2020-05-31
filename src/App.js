@@ -6,15 +6,12 @@ import UserLoginPage from './pages/UserLoginPage'
 import UserSignupPage from './pages/UserSignupPage'
 
 import { HashRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
 import TopBar from './components/TopBar'
 
-// import { Authentication } from './shared/AuthenticationContext'
-
 class App extends React.Component {
-  // static contextType = Authentication
-
   render() {
-    const { isLoggedIn } = false
+    const { isLoggedIn } = this.props
     return (
       <div className='container'>
         <Router>
@@ -35,4 +32,10 @@ class App extends React.Component {
   }
 }
 
-export default App
+const mapStateToProps = (store) => {
+  return {
+    isLoggedIn: store.isLoggedIn,
+  }
+}
+
+export default connect(mapStateToProps)(App)
