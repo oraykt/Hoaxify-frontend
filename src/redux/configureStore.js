@@ -1,19 +1,39 @@
 import { createStore } from 'redux'
+import SecureLS from 'secure-ls'
 import authReducer from './authReducer'
-const loggedInState = {
-  isLoggedIn: true,
-  username: 'user1',
-  displayName: 'display1',
-  image: null,
-  password: 'P4ssword',
+
+const secureLs = new SecureLS()
+
+const getStateFromStorage = () => {
+  const hoaxAuth = secureLs.get('hoax-auth')
+
+  let stateInLocalStorage = {
+    isLoggedIn: false,
+    username: undefined,
+    displayName: undefined,
+    image: undefined,
+    password: undefined,
+  }
+  if (hoaxAuth) return hoaxAuth
+  return stateInLocalStorage
+}
+
+const updateStateInLocalStorage = (newState) => {
+  secureLs.set('hoax-auth', newState)
 }
 
 const configureStore = () => {
-  return createStore(
+  const store = createStore(
     authReducer,
-    loggedInState,
+    getStateFromStorage(),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
+
+  store.subscribe(() => {
+    updateStateInLocalStorage(store.getState())
+  })
+
+  return store
 }
 
 export default configureStore

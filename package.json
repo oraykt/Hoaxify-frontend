@@ -19,15 +19,15 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "secure-ls": "^1.2.6"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "set PORT=3001 && react-scripts start",
-    "preinstall": "npx npm-force-resolutions"
+    "dev": "set PORT=3001 && react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
