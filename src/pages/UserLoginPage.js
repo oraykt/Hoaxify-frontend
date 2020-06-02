@@ -1,11 +1,10 @@
 import React from 'react'
-import { login } from '../api/apiCalls'
 import Input from '../components/Input'
 import ButtonWithProgress from '../components/ButtonWithProgress'
 import { withTranslation } from 'react-i18next'
 import { withApiProgress } from '../shared/ApiProgress'
 import { connect } from 'react-redux'
-import { login as apiLogin } from '../actions/auth'
+import { loginHandler } from '../actions/auth'
 
 class UserLoginPage extends React.Component {
   state = {
@@ -26,21 +25,17 @@ class UserLoginPage extends React.Component {
     try {
       event.preventDefault()
       const { username, password } = this.state
-      const user = {
+      const creds = {
         username,
         password,
       }
-      const { push } = this.props.history
+      const { dispatch, history } = this.props
+      const { push } = history
       this.setState({ error: null })
-      const response = await login(user)
+
+      await dispatch(loginHandler(creds))
+
       push('/')
-
-      const authState = {
-        ...response.data,
-        password,
-      }
-
-      this.props.onLogin(authState)
     } catch (apiError) {
       this.setState({
         error: apiError.response.data.message,
@@ -88,12 +83,13 @@ class UserLoginPage extends React.Component {
 
 const UserLoginPageWithTranslation = withTranslation()(UserLoginPage)
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onLogin: (authState) => dispatch(apiLogin(authState)),
-  }
-}
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onLogin: (authState) => dispatch(apiLogin(authState)),
+//   }
+// }
+
 export default connect(
-  null,
-  mapDispatchToProps
+  null
+  // mapDispatchToProps
 )(withApiProgress(UserLoginPageWithTranslation, '/api/1.0/auth'))
