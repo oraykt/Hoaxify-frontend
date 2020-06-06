@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import { withTranslation } from 'react-i18next'
 
 const ButtonWithProgress = ({ onClick, pendingApiCall, disabled, text }) => {
   return (
@@ -14,4 +13,4 @@ const ButtonWithProgress = ({ onClick, pendingApiCall, disabled, text }) => {
   )
 }
 
-export default withTranslation()(ButtonWithProgress)
+export default ButtonWithProgress
