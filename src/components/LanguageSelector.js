@@ -1,28 +1,29 @@
 import React, { Fragment } from 'react'
-import { withTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { changeHeaderLanguage } from '../api/apiCalls'
 
 // TODO @Create selector from array
-// eslint-disable-next-line no-unused-vars
-const Countries = [
-  {
-    flag: 'us',
-    language: 'en',
-  },
-  {
-    flag: 'tr',
-    language: 'tr',
-  },
-  {
-    flag: 'pl',
-    language: 'pl',
-  },
-]
+// const Countries = [
+//   {
+//     flag: 'us',
+//     language: 'en',
+//   },
+//   {
+//     flag: 'tr',
+//     language: 'tr',
+//   },
+//   {
+//     flag: 'pl',
+//     language: 'pl',
+//   },
+// ]
 
-const LanguageSelector = ({ i18n }) => {
-  const onChangeLanguage = (language) => {
-    i18n.changeLanguage(language)
-    changeHeaderLanguage(language)
+const LanguageSelector = (props) => {
+  const { i18n } = useTranslation()
+
+  const onChangeLanguage = (langCode) => {
+    i18n.changeLanguage(langCode)
+    changeHeaderLanguage(langCode)
   }
   return (
     <Fragment>
@@ -48,4 +49,4 @@ const LanguageSelector = ({ i18n }) => {
   )
 }
 
-export default withTranslation()(LanguageSelector)
+export default LanguageSelector

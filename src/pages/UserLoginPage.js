@@ -1,95 +1,72 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Input from '../components/Input'
 import ButtonWithProgress from '../components/ButtonWithProgress'
-import { withTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { withApiProgress } from '../shared/ApiProgress'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { loginHandler } from '../actions/auth'
 
-class UserLoginPage extends React.Component {
-  state = {
-    username: null,
-    password: null,
-    error: null,
-  }
+const UserLoginPage = (props) => {
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
+  const [error, setError] = useState()
 
-  onChange = (event) => {
-    const { name, value } = event.target
-    this.setState({
-      [name]: value,
-      error: false,
-    })
-  }
+  const dispatch = useDispatch()
+  const { t: translate } = useTranslation()
 
-  onClickLogin = async (event) => {
+  useEffect(() => {
+    setError(undefined)
+  }, [username, password])
+
+  const onClickLogin = async (event) => {
     try {
       event.preventDefault()
-      const { username, password } = this.state
       const creds = {
         username,
         password,
       }
-      const { dispatch, history } = this.props
-      const { push } = history
-      this.setState({ error: null })
+      const { push } = props.history
+      setError(undefined)
 
       await dispatch(loginHandler(creds))
 
       push('/')
     } catch (apiError) {
-      this.setState({
-        error: apiError.response.data.message,
-      })
+      setError(apiError.response.data.message)
     }
   }
 
-  render() {
-    const { error, username, password } = this.state
-    const { t: translate, pendingApiCall } = this.props
+  const { pendingApiCall } = props
 
-    const buttonEnabled = username && password
+  const buttonEnabled = username && password
 
-    return (
-      <div className='container'>
-        <form>
-          <h1 className='text-center'>{translate('Login')}</h1>
-          {error && <div className='alert alert-danger'>{error}</div>}
+  return (
+    <div className='container'>
+      <form>
+        <h1 className='text-center'>{translate('Login')}</h1>
+        {error && <div className='alert alert-danger'>{error}</div>}
 
-          <Input
-            name='username'
-            type='text'
-            label={translate('Username')}
-            onChange={this.onChange}
+        <Input
+          type='text'
+          label={translate('Username')}
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        <Input
+          type='password'
+          label={translate('Password')}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <div className='text-center'>
+          <ButtonWithProgress
+            onClick={onClickLogin}
+            pendingApiCall={pendingApiCall}
+            disabled={!buttonEnabled || pendingApiCall}
+            text={translate('Login')}
           />
-          <Input
-            name='password'
-            type='password'
-            label={translate('Password')}
-            onChange={this.onChange}
-          />
-          <div className='text-center'>
-            <ButtonWithProgress
-              onClick={this.onClickLogin}
-              pendingApiCall={pendingApiCall}
-              disabled={!buttonEnabled || pendingApiCall}
-              text={translate('Login')}
-            />
-          </div>
-        </form>
-      </div>
-    )
-  }
+        </div>
+      </form>
+    </div>
+  )
 }
 
-const UserLoginPageWithTranslation = withTranslation()(UserLoginPage)
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onLogin: (authState) => dispatch(apiLogin(authState)),
-//   }
-// }
-
-export default connect(
-  null
-  // mapDispatchToProps
-)(withApiProgress(UserLoginPageWithTranslation, '/api/1.0/auth'))
+export default withApiProgress(UserLoginPage, '/api/1.0/auth')
