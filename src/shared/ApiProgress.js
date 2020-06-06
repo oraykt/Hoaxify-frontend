@@ -1,54 +1,47 @@
-import React, { Component } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const getDisplayName = (WrappedComponent) => {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component'
-}
+export const useApiProgress = (apiPath) => {
+  const [pendingApiCall, setPendingApiCall] = useState(false)
 
-export const withApiProgress = (WrappedComponent, apiPath) => {
-  return class ApiProgress extends Component {
-    static displayName = `ApiProgress(${getDisplayName(WrappedComponent)})`
+  useEffect(() => {
+    let requestIntercepter, responseIntercepter
 
-    state = {
-      pendingApiCall: false,
-    }
+    const registerInterceptors = () => {
+      const updateForProgress = (url, inProgress) => {
+        if (url === apiPath) {
+          setPendingApiCall(inProgress)
+        }
+      }
 
-    componentDidMount() {
-      this.requestIntercepter = axios.interceptors.request.use((request) => {
-        this.updateForProgress(request.url, true)
+      requestIntercepter = axios.interceptors.request.use((request) => {
+        updateForProgress(request.url, true)
         return request
       })
 
-      this.responseIntercepter = axios.interceptors.response.use(
+      responseIntercepter = axios.interceptors.response.use(
         (response) => {
-          this.updateForProgress(response.config.url, false)
+          updateForProgress(response.config.url, false)
           return response
         },
         (error) => {
-          this.updateForProgress(error.config.url, false)
+          updateForProgress(error.config.url, false)
           throw error
         }
       )
     }
 
-    componentWillUnmount() {
-      axios.interceptors.request.eject(this.requestIntercepter)
-      axios.interceptors.response.eject(this.responseIntercepter)
+    const unregisterInterceptors = () => {
+      axios.interceptors.request.eject(requestIntercepter)
+      axios.interceptors.response.eject(responseIntercepter)
     }
 
-    updateForProgress(url, inProgress) {
-      if (url === apiPath) {
-        this.setState({ pendingApiCall: inProgress })
-      }
-    }
+    registerInterceptors()
 
-    render() {
-      const pendingApiCall =
-        this.state.pendingApiCall || this.props.pendingApiCall
-
-      return (
-        <WrappedComponent {...this.props} pendingApiCall={pendingApiCall} />
-      )
+    return function unmount() {
+      unregisterInterceptors()
     }
-  }
+  })
+
+  return pendingApiCall
 }

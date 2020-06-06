@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Input from '../components/Input'
 import ButtonWithProgress from '../components/ButtonWithProgress'
 import { useTranslation } from 'react-i18next'
-import { withApiProgress } from '../shared/ApiProgress'
+import { useApiProgress } from '../shared/ApiProgress'
 import { useDispatch } from 'react-redux'
 import { loginHandler } from '../actions/auth'
 
@@ -13,6 +13,8 @@ const UserLoginPage = (props) => {
 
   const dispatch = useDispatch()
   const { t: translate } = useTranslation()
+
+  const pendingApiCall = useApiProgress('/api/1.0/auth')
 
   useEffect(() => {
     setError(undefined)
@@ -35,8 +37,6 @@ const UserLoginPage = (props) => {
       setError(apiError.response.data.message)
     }
   }
-
-  const { pendingApiCall } = props
 
   const buttonEnabled = username && password
 
@@ -69,4 +69,4 @@ const UserLoginPage = (props) => {
   )
 }
 
-export default withApiProgress(UserLoginPage, '/api/1.0/auth')
+export default UserLoginPage

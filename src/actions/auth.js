@@ -1,5 +1,5 @@
 import { LOG_IN, LOG_OUT } from './types'
-import { login as apiLogin, signup as apiSignup, login } from '../api/apiCalls'
+import { login as apiLogin, signup as apiSignup } from '../api/apiCalls'
 
 export const loginSuccess = (AuthState) => {
   return {
