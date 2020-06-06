@@ -14,7 +14,7 @@ const UserLoginPage = (props) => {
   const dispatch = useDispatch()
   const { t: translate } = useTranslation()
 
-  const pendingApiCall = useApiProgress('/api/1.0/auth')
+  const pendingApiCall = useApiProgress('/api/v1/auth')
 
   useEffect(() => {
     setError(undefined)

@@ -19,8 +19,8 @@ const UserSignupPage = (props) => {
   const { t: translate } = useTranslation()
   const dispatch = useDispatch()
 
-  const pendingApiCallSignup = useApiProgress('/api/1.0/users')
-  const pendingApiCallLogin = useApiProgress('/api/1.0/auth')
+  const pendingApiCallSignup = useApiProgress('/api/v1/users')
+  const pendingApiCallLogin = useApiProgress('/api/v1/auth')
 
   const pendingApiCall = pendingApiCallSignup || pendingApiCallLogin
 
