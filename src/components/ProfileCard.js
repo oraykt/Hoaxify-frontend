@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import defaultPicture from '../assets/profile.png'
+import ProfileImage from './ProfileImage'
 
 const ProfileCard = (props) => {
   const { username: loggedInUsername } = useSelector((store) => ({
@@ -13,17 +13,12 @@ const ProfileCard = (props) => {
   const { user } = props
   const { username, displayName, image } = user
 
-  let imageSource = defaultPicture
-  if (image) {
-    imageSource = image
-  }
-
   return (
     <div className='card text-center'>
       <div className='card-header'>
-        <img
+        <ProfileImage
           className='rounded-circle shadow'
-          src={imageSource}
+          image={image}
           alt={`${username} profile`}
           width='200'
           height='200'
