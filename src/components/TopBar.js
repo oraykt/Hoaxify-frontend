@@ -43,7 +43,7 @@ const TopBar = (props) => {
     links = (
       <ul className='navbar-nav ml-auto'>
         <li>
-          <Link className='nav-link' to={`/user/${username}`}>
+          <Link className='nav-link' to={`/users/${username}`}>
             {username}({displayName})
           </Link>
         </li>

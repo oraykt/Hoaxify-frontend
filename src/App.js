@@ -24,7 +24,7 @@ const App = () => {
             <Route exact path='/login' component={UserLoginPage} />
           )}
           <Route exact path='/signup' component={UserSignupPage} />
-          <Route exact path='/user/:username' component={UserPage} />
+          <Route exact path='/users/:username' component={UserPage} />
           <Redirect to='/' />
         </Switch>
       </Router>

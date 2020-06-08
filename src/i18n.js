@@ -18,6 +18,7 @@ i18n.use(initReactI18next).init({
         Previous: '< Previous',
         Loading: 'Loading',
         'Load Failure': 'Load Failure',
+        'User not found': 'User not found',
       },
     },
     tr: {
@@ -35,6 +36,7 @@ i18n.use(initReactI18next).init({
         Previous: '< Önceki',
         Loading: 'Yükleniyor',
         'Load Failure': 'Yükleme hatası',
+        'User not found': 'Kullanıcı bulunamadı',
       },
     },
     pl: {
@@ -52,6 +54,7 @@ i18n.use(initReactI18next).init({
         Previous: '< Poprzedni',
         Loading: 'Ładowanie',
         'Load Failure': 'Błąd ładowania',
+        'User not found': 'Użytkownik nie znaleziony',
       },
     },
   },

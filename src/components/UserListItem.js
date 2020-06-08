@@ -11,7 +11,7 @@ const UserListItem = (props) => {
   }
   return (
     <Link
-      to={`/user/${username}`}
+      to={`/users/${username}`}
       className='list-group-item list-group-item-action'
     >
       <img

@@ -8,6 +8,10 @@ export const login = (user) => {
   return axios.post('/api/v1/auth', {}, { auth: user })
 }
 
+export const getUser = (username) => {
+  return axios.get(`/api/v1/users/${username}`)
+}
+
 export const getUsers = (page = 0, size = 5) => {
   return axios.get(`/api/v1/users?page=${page}&size=${size}`)
 }
