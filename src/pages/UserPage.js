@@ -15,8 +15,8 @@ const UserPage = (props) => {
   const [notFound, setNotFound] = useState(false)
   const { t: translate } = useTranslation()
 
-  const pendingApiCall = useApiProgress('/api/v1/users/')
   const { username } = useParams()
+  const pendingApiCall = useApiProgress('/api/v1/users/' + username)
 
   useEffect(() => {
     setNotFound(false)
@@ -34,6 +34,10 @@ const UserPage = (props) => {
     loadUser()
   }, [username])
 
+  if (pendingApiCall) {
+    return <Spinner />
+  }
+
   if (notFound) {
     return (
       <div className='container'>
@@ -47,10 +51,6 @@ const UserPage = (props) => {
         </div>
       </div>
     )
-  }
-
-  if (pendingApiCall) {
-    return <Spinner />
   }
 
   return (
