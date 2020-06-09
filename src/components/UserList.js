@@ -8,7 +8,7 @@ import { getUsers as apiGetUsers } from '../api/apiCalls'
 
 const UserList = () => {
   const { t: translate } = useTranslation()
-  const pendingApiCall = useApiProgress('/api/v1/users?page')
+  const pendingApiCall = useApiProgress('get', '/api/v1/users?page')
 
   const [page, setPage] = useState({
     content: [],

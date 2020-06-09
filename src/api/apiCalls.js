@@ -12,6 +12,10 @@ export const getUser = (username) => {
   return axios.get(`/api/v1/users/${username}`)
 }
 
+export const updateUser = (username, body) => {
+  return axios.put(`/api/v1/users/${username}`, body)
+}
+
 export const getUsers = (page = 0, size = 5) => {
   return axios.get(`/api/v1/users?page=${page}&size=${size}`)
 }

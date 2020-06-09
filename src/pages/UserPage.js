@@ -16,7 +16,7 @@ const UserPage = (props) => {
   const { t: translate } = useTranslation()
 
   const { username } = useParams()
-  const pendingApiCall = useApiProgress('/api/v1/users/' + username)
+  const pendingApiCall = useApiProgress('get', '/api/v1/users/' + username)
 
   useEffect(() => {
     setNotFound(false)
