@@ -13,6 +13,7 @@ const ProfileCard = (props) => {
   const [updatedDisplayName, setUpdatedDisplayName] = useState()
   const [user, setUser] = useState({})
   const [editable, setEditable] = useState(false)
+  const [newImage, setNewImage] = useState()
   const { t: translate } = useTranslation()
 
   const { username: loggedInUsername } = useSelector((store) => ({
@@ -36,6 +37,7 @@ const ProfileCard = (props) => {
   useEffect(() => {
     if (!inEditMode) {
       setUpdatedDisplayName(undefined)
+      setNewImage(undefined)
     } else {
       setUpdatedDisplayName(displayName)
     }
@@ -44,12 +46,22 @@ const ProfileCard = (props) => {
   const onClickSave = async () => {
     const body = {
       displayName: updatedDisplayName,
+      image: newImage,
     }
     try {
       const response = await apiUpdateUser(username, body)
       setUser(response.data)
       setInEditMode(false)
     } catch (error) {}
+  }
+
+  const onChangeFile = (event) => {
+    const file = event.target.files[0]
+    const fileReader = new FileReader()
+    fileReader.onloadend = () => {
+      setNewImage(fileReader.result)
+    }
+    fileReader.readAsDataURL(file)
   }
 
   return (
@@ -61,6 +73,7 @@ const ProfileCard = (props) => {
           alt={`${username} profile`}
           width='200'
           height='200'
+          tempImage={newImage}
         />
       </div>
       <div className='card-body'>
@@ -83,6 +96,7 @@ const ProfileCard = (props) => {
         {inEditMode && (
           <Fragment>
             <div className=''>
+              <input type='file' onChange={onChangeFile} />
               <Input
                 label={translate('Change Display Name')}
                 defaultValue={displayName}
