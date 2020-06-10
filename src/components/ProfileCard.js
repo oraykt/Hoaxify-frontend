@@ -44,9 +44,13 @@ const ProfileCard = (props) => {
   }, [inEditMode, displayName])
 
   const onClickSave = async () => {
+    let image
+    if (newImage) {
+      image = newImage.split(',')[1]
+    }
     const body = {
       displayName: updatedDisplayName,
-      image: newImage,
+      image,
     }
     try {
       const response = await apiUpdateUser(username, body)
@@ -56,6 +60,9 @@ const ProfileCard = (props) => {
   }
 
   const onChangeFile = (event) => {
+    if (event.target.files.length < 1) {
+      return
+    }
     const file = event.target.files[0]
     const fileReader = new FileReader()
     fileReader.onloadend = () => {
@@ -73,7 +80,7 @@ const ProfileCard = (props) => {
           alt={`${username} profile`}
           width='200'
           height='200'
-          tempImage={newImage}
+          tempimage={newImage}
         />
       </div>
       <div className='card-body'>
