@@ -23,6 +23,7 @@ i18n.use(initReactI18next).init({
         Save: 'Save',
         Cancel: 'Cancel',
         'Change Display Name': 'Change Display Name',
+        'My Profile': 'My Profile',
       },
     },
     tr: {
@@ -45,6 +46,7 @@ i18n.use(initReactI18next).init({
         Save: 'Kaydet',
         Cancel: 'İptal',
         'Change Display Name': 'Görünen Adı Değiştir',
+        'My Profile': 'Hesabım',
       },
     },
     pl: {
@@ -67,6 +69,7 @@ i18n.use(initReactI18next).init({
         Save: 'Zapisz',
         Cancel: 'Anuluj',
         'Change Display Name': 'Zmień wyświetlaną nazwę',
+        'My Profile': 'Mój Profil',
       },
     },
   },
