@@ -26,7 +26,7 @@ const TopBar = (props) => {
   useEffect(() => {
     document.addEventListener('click', menuClickTracker)
     return () => {
-      document.removeEventListener('click')
+      document.removeEventListener('click', menuClickTracker)
     }
   }, [isLoggedIn])
 
