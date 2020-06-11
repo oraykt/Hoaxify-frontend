@@ -14,6 +14,7 @@ const ProfileCard = (props) => {
   const [user, setUser] = useState({})
   const [editable, setEditable] = useState(false)
   const [newImage, setNewImage] = useState()
+  const [validationErrors, setValidationErrors] = useState({})
   const { t: translate } = useTranslation()
 
   const { username: loggedInUsername } = useSelector((store) => ({
@@ -43,6 +44,13 @@ const ProfileCard = (props) => {
     }
   }, [inEditMode, displayName])
 
+  useEffect(() => {
+    setValidationErrors((previousErrors) => ({
+      ...previousErrors,
+      displayName: undefined,
+    }))
+  }, [updatedDisplayName])
+
   const onClickSave = async () => {
     let image
     if (newImage) {
@@ -56,7 +64,11 @@ const ProfileCard = (props) => {
       const response = await apiUpdateUser(username, body)
       setUser(response.data)
       setInEditMode(false)
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.data.validationErrors) {
+        setValidationErrors(error.response.data.validationErrors)
+      }
+    }
   }
 
   const onChangeFile = (event) => {
@@ -70,6 +82,8 @@ const ProfileCard = (props) => {
     }
     fileReader.readAsDataURL(file)
   }
+
+  const { displayName: displayNameError } = validationErrors
 
   return (
     <div className='card text-center'>
@@ -103,12 +117,17 @@ const ProfileCard = (props) => {
         {inEditMode && (
           <Fragment>
             <div className=''>
-              <input type='file' onChange={onChangeFile} />
+              <input
+                type='file'
+                onChange={onChangeFile}
+                accept='.jpg,.jpeg,.png'
+              />
               <Input
                 label={translate('Change Display Name')}
                 defaultValue={displayName}
                 onChange={(event) => setUpdatedDisplayName(event.target.value)}
                 disabled={pendingApiCall}
+                error={displayNameError}
               />
               <div className=''>
                 <ButtonWithProgress
