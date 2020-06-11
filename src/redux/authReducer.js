@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT } from '../actions/types'
+import { LOG_IN, LOG_OUT, UPDATE_PROFILE } from '../actions/types'
 
 const defaultState = {
   isLoggedIn: false,
@@ -16,6 +16,11 @@ const reducer = (state = { ...defaultState }, action) => {
     case LOG_IN:
       return {
         isLoggedIn: true,
+        ...payload,
+      }
+    case UPDATE_PROFILE:
+      return {
+        ...state,
         ...payload,
       }
     default:

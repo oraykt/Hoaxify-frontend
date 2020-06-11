@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT } from './types'
+import { LOG_IN, LOG_OUT, UPDATE_PROFILE } from './types'
 import { login as apiLogin, signup as apiSignup } from '../api/apiCalls'
 
 export const loginSuccess = (AuthState) => {
@@ -30,4 +30,14 @@ export const signupHandler = (user) => async (dispatch) => {
   const response = await apiSignup(user)
   await dispatch(loginHandler(user))
   return response
+}
+
+export const updateProfile = ({displayName, image})=> {
+  return{
+    type: UPDATE_PROFILE,
+    payload: {
+      displayName,
+      image
+    }
+  }
 }

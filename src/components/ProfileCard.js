@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useApiProgress } from '../shared/ApiProgress'
 import { updateUser as apiUpdateUser } from '../api/apiCalls'
+import { updateProfile as updateProfileState } from '../actions/auth'
 import Input from './Input'
 import ProfileImage from './ProfileImage'
 import ButtonWithProgress from './ButtonWithProgress'
@@ -16,7 +17,7 @@ const ProfileCard = (props) => {
   const [newImage, setNewImage] = useState()
   const [validationErrors, setValidationErrors] = useState({})
   const { t: translate } = useTranslation()
-
+  const dispatch = useDispatch()
   const { username: loggedInUsername } = useSelector((store) => ({
     username: store.username,
   }))
@@ -69,6 +70,7 @@ const ProfileCard = (props) => {
     try {
       const response = await apiUpdateUser(username, body)
       setUser(response.data)
+      dispatch(updateProfileState(response.data))
       setInEditMode(false)
     } catch (error) {
       if (error.response.data.validationErrors) {
