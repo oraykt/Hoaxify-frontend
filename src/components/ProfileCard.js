@@ -50,6 +50,12 @@ const ProfileCard = (props) => {
       displayName: undefined,
     }))
   }, [updatedDisplayName])
+  useEffect(() => {
+    setValidationErrors((previousErrors) => ({
+      ...previousErrors,
+      image: undefined,
+    }))
+  }, [newImage])
 
   const onClickSave = async () => {
     let image
@@ -83,7 +89,7 @@ const ProfileCard = (props) => {
     fileReader.readAsDataURL(file)
   }
 
-  const { displayName: displayNameError } = validationErrors
+  const { displayName: displayNameError, image: imageError } = validationErrors
 
   return (
     <div className='card text-center'>
@@ -117,11 +123,6 @@ const ProfileCard = (props) => {
         {inEditMode && (
           <Fragment>
             <div className=''>
-              <input
-                type='file'
-                onChange={onChangeFile}
-                accept='.jpg,.jpeg,.png'
-              />
               <Input
                 label={translate('Change Display Name')}
                 defaultValue={displayName}
@@ -129,7 +130,13 @@ const ProfileCard = (props) => {
                 disabled={pendingApiCall}
                 error={displayNameError}
               />
-              <div className=''>
+              <Input
+                type='file'
+                onChange={onChangeFile}
+                error={imageError}
+                accept='.jpeg,.jpg,.png'
+              />
+              <div className='mt-3'>
                 <ButtonWithProgress
                   className='btn btn-primary d-inline-flex'
                   onClick={onClickSave}

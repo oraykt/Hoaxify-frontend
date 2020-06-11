@@ -9,8 +9,17 @@ const Input = (props) => {
     type,
     defaultValue,
     disabled = false,
+    accept,
   } = props
-  const className = error ? 'form-control is-invalid' : 'form-control'
+
+  let className = 'form-control'
+  if (type === 'file') {
+    className += '-file'
+  }
+  if (error !== undefined) {
+    className += ' is-invalid'
+  }
+
   return (
     <div className='form-group'>
       <label htmlFor=''>{label}</label>
@@ -21,6 +30,7 @@ const Input = (props) => {
         onChange={onChange}
         defaultValue={defaultValue}
         disabled={disabled}
+        accept={accept}
       />
       <div className='invalid-feedback'>{error}</div>
     </div>
