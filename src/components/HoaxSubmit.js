@@ -1,31 +1,40 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { useApiProgress } from '../shared/ApiProgress'
 import ProfileImage from './ProfileImage'
+import ButtonWithProgress from './ButtonWithProgress'
 import { postHoax as apiPostHoax } from '../api/apiCalls'
 
 const HoaxSubmit = () => {
-
   const { image, isLoggedIn } = useSelector((store) => ({
     image: store.image,
     isLoggedIn: store.isLoggedIn,
   }))
   const [focused, setFocused] = useState(false)
   const [hoax, setHoax] = useState('')
+  const [errors, setErrors] = useState({})
+
+  const pendingApiCall = useApiProgress('post', '/api/v1/hoaxes')
 
   const textArea = useRef()
 
-  const menuClickTracker = (event) => {
+  const textAreaClickTracker = (event) => {
     if (textArea.current === null || !textArea.current.contains(event.target)) {
       setFocused(false)
+      setErrors({})
     }
   }
 
   useEffect(() => {
-    document.addEventListener('click', menuClickTracker)
+    document.addEventListener('click', textAreaClickTracker)
     return () => {
-      document.removeEventListener('click', menuClickTracker)
+      document.removeEventListener('click', textAreaClickTracker)
     }
   }, [isLoggedIn])
+
+  useEffect(() => {
+    setErrors({})
+  }, [hoax])
 
   const onClickHoaxify = async () => {
     const body = {
@@ -34,7 +43,21 @@ const HoaxSubmit = () => {
 
     try {
       await apiPostHoax(body)
-    } catch (error) {}
+      setFocused(false)
+      setHoax('')
+    } catch (error) {
+      if (error.response.data.validationErrors) {
+        setErrors(error.response.data.validationErrors)
+      }
+    }
+  }
+
+  const { content: contentError } = errors
+
+  let textAreaClass = 'form-control'
+
+  if (contentError) {
+    textAreaClass += ' is-invalid'
   }
 
   return (
@@ -48,26 +71,34 @@ const HoaxSubmit = () => {
         />
         <div className='flex-fill'>
           <textarea
-            className='form-control'
+            className={textAreaClass}
             rows={focused ? '3' : '1'}
             onFocus={() => setFocused(true)}
             onChange={(event) => setHoax(event.target.value)}
             value={hoax}
+            disabled={pendingApiCall}
           />
+          {contentError && (
+            <div className='invalid-feedback'>{contentError}</div>
+          )}
           {focused && (
             <div className='text-right mt-2'>
-              <button className='btn btn-primary' onClick={onClickHoaxify}>
-                Hoaxify
-              </button>
+              <ButtonWithProgress
+                className='btn btn-primary'
+                onClick={onClickHoaxify}
+                pendingApiCall={pendingApiCall}
+                disabled={pendingApiCall}
+                text='Hoaxify'
+              />
               <button
                 className='btn btn-sm btn-danger d-inline-flex ml-2'
                 onClick={() => {
                   setFocused(false)
                   setHoax('')
+                  setErrors({})
                 }}
-                disabled={false}
+                disabled={pendingApiCall}
               >
-                {' '}
                 <i className='material-icons'>close</i>
               </button>
             </div>
