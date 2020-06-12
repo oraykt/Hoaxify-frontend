@@ -37,6 +37,6 @@ export const postHoax = (hoax) => {
   return axios.post('/api/v1/hoaxes', hoax)
 }
 
-export const getHoaxes = (page = 0, size = 10) => {
-  return axios.get(`/api/v1/hoaxes`)
+export const getHoaxes = (page = 0) => {
+  return axios.get(`/api/v1/hoaxes?page=${page}`)
 }
