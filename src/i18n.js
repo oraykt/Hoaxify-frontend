@@ -24,6 +24,8 @@ i18n.use(initReactI18next).init({
         Cancel: 'Cancel',
         'Change Display Name': 'Change Display Name',
         'My Profile': 'My Profile',
+        'There are no hoaxes': 'There are no hoaxes',
+        'Load old Hoaxes': 'Load old Hoaxes',
       },
     },
     tr: {
@@ -47,6 +49,8 @@ i18n.use(initReactI18next).init({
         Cancel: 'İptal',
         'Change Display Name': 'Görünen Adı Değiştir',
         'My Profile': 'Hesabım',
+        'There are no hoaxes': 'Hoax bulunamadı',
+        'Load old Hoaxes': 'Eskileri getir',
       },
     },
     pl: {
@@ -70,6 +74,8 @@ i18n.use(initReactI18next).init({
         Cancel: 'Anuluj',
         'Change Display Name': 'Zmień wyświetlaną nazwę',
         'My Profile': 'Mój Profil',
+        'There are no hoaxes': 'Hoax nie znaleziono',
+        'Load old Hoaxes': 'Przynieś stare ',
       },
     },
   },

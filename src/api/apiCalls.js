@@ -36,3 +36,7 @@ export const setAuthorizationHeader = ({ username, password, isLoggedIn }) => {
 export const postHoax = (hoax) => {
   return axios.post('/api/v1/hoaxes', hoax)
 }
+
+export const getHoaxes = (page = 0, size = 10) => {
+  return axios.get(`/api/v1/hoaxes`)
+}
