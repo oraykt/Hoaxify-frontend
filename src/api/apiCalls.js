@@ -32,3 +32,7 @@ export const setAuthorizationHeader = ({ username, password, isLoggedIn }) => {
     delete axios.defaults.headers['Authorization']
   }
 }
+
+export const postHoax = (hoax) => {
+  return axios.post('/api/v1/hoaxes', hoax)
+}

@@ -1,12 +1,21 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import UserList from '../components/UserList'
+import HoaxSubmit from '../components/HoaxSubmit'
+import { useSelector } from 'react-redux'
 
 const HomePage = () => {
+  const { isLoggedIn } = useSelector((store) => ({
+    isLoggedIn: store.isLoggedIn,
+  }))
   return (
-    <Fragment>
-      <h1>Home Page</h1>
-      <UserList />
-    </Fragment>
+    <div className='container'>
+      <div className='row'>
+        <div className='col-8'>{isLoggedIn && <HoaxSubmit />}</div>
+        <div className='col-4'>
+          <UserList />
+        </div>
+      </div>
+    </div>
   )
 }
 
