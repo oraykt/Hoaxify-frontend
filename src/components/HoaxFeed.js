@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { getHoaxes as apiGetHoaxes } from '../api/apiCalls'
 import HoaxView from './HoaxView'
@@ -12,18 +13,23 @@ const HoaxFeed = () => {
     number: 0,
   })
 
+  const { username } = useParams()
+
   const { t: translate } = useTranslation()
 
-  const pendingApiCall = useApiProgress('get', '/api/v1/hoaxes?page')
+  const path = username
+    ? `/api/v1/users/${username}/hoaxes?page=`
+    : `/api/v1/hoaxes?page=`
+  const pendingApiCall = useApiProgress('get', path)
 
   useEffect(() => {
     loadHoaxes()
-  }, [])
+  }, [username])
 
   const loadHoaxes = async (page) => {
     if (pendingApiCall) return
     try {
-      const response = await apiGetHoaxes(page)
+      const response = await apiGetHoaxes(page, username)
       setHoaxPage((previousHoaxPage) => ({
         ...response.data,
         content: [...previousHoaxPage.content, ...response.data.content],

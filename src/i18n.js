@@ -1,6 +1,6 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-
+import { register } from 'timeago.js'
 i18n.use(initReactI18next).init({
   resources: {
     en: {
@@ -92,4 +92,63 @@ i18n.use(initReactI18next).init({
   },
 })
 
+const timeAgoTr = (number, index) => {
+  return [
+    ['az önce', 'şimdi'],
+    ['%s saniye önce', '%s saniye içinde'],
+    ['1 dakika önce', '1 dakika içinde'],
+    ['%s dakika önce', '%s dakika içinde'],
+    ['1 saat önce', '1 saat içinde'],
+    ['%s saat önce', '%s saat içinde'],
+    ['1 gün önce', '1 gün içinde'],
+    ['%s gün önce', '%s gün içinde'],
+    ['1 hafta önce', '1 hafta içinde'],
+    ['%s hafta önce', '%s hafta içinde'],
+    ['1 ay önce', '1 ay içinde'],
+    ['%s ay önce', '%s ay içinde'],
+    ['1 yıl önce', '1 yıl içinde'],
+    ['%s yıl önce', '%s yıl içinde'],
+  ][index]
+}
+
+register('tr', timeAgoTr)
+
+const pl = [
+  ['w tej chwili', 'za chwilę'],
+  ['%s sekund temu', 'za %s sekund'],
+  ['1 minutę temu', 'za 1 minutę'],
+  ['%s minut temu', 'za %s minut'],
+  ['1 godzinę temu', 'za 1 godzinę'],
+  ['%s godzin temu', 'za %s godzin'],
+  ['1 dzień temu', 'za 1 dzień'], // ['wczoraj', 'jutro'],
+  ['%s dni temu', 'za %s dni'],
+  ['1 tydzień temu', 'za 1 tydzień'],
+  ['%s tygodni temu', 'za %s tygodni'],
+  ['1 miesiąc temu', 'za 1 miesiąc'],
+  ['%s miesięcy temu', 'za %s miesięcy'],
+  ['1 rok temu', 'za 1 rok'],
+  ['%s lat temu', 'za %s lat'],
+  ['%s sekundy temu', 'za %s sekundy'],
+  ['%s minuty temu', 'za %s minuty'],
+  ['%s godziny temu', 'za %s godziny'],
+  ['%s dni temu', 'za %s dni'],
+  ['%s tygodnie temu', 'za %s tygodnie'],
+  ['%s miesiące temu', 'za %s miesiące'],
+  ['%s lata temu', 'za %s lata'],
+]
+
+const timeAgoPl = (number, index) => {
+  // to determine which plural form must be used check the last 2 digits
+  // and calculate new index value to get the nominative form (14-20)
+  // for all other cases use index value as it is (0-13)
+  return pl[
+    index & 1
+      ? number % 10 > 4 || number % 10 < 2 || 1 === ~~(number / 10) % 10
+        ? index
+        : ++index / 2 + 13
+      : index
+  ]
+}
+
+register('pl', timeAgoPl)
 export default i18n

@@ -5,6 +5,7 @@ import { getUser as apiGetUser } from '../api/apiCalls'
 import { useApiProgress } from '../shared/ApiProgress'
 import ProfileCard from '../components/ProfileCard'
 import Spinner from '../components/Spinner'
+import HoaxFeed from '../components/HoaxFeed'
 
 const UserPage = (props) => {
   const [user, setUser] = useState({
@@ -16,7 +17,11 @@ const UserPage = (props) => {
   const { t: translate } = useTranslation()
 
   const { username } = useParams()
-  const pendingApiCall = useApiProgress('get', '/api/v1/users/' + username)
+  const pendingApiCall = useApiProgress(
+    'get',
+    '/api/v1/users/' + username,
+    true
+  )
 
   useEffect(() => {
     setNotFound(false)
@@ -34,10 +39,6 @@ const UserPage = (props) => {
     loadUser()
   }, [username])
 
-  if (pendingApiCall) {
-    return <Spinner />
-  }
-
   if (notFound) {
     return (
       <div className='container'>
@@ -53,9 +54,20 @@ const UserPage = (props) => {
     )
   }
 
+  if (pendingApiCall || user.username !== username) {
+    return <Spinner />
+  }
+
   return (
     <Fragment>
-      <ProfileCard user={user} />
+      <div className='row'>
+        <div className='col-4'>
+          <ProfileCard user={user} />
+        </div>
+        <div className='col-8'>
+          <HoaxFeed />
+        </div>
+      </div>
     </Fragment>
   )
 }
