@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { getHoaxes as apiGetHoaxes } from '../api/apiCalls'
+import {
+  getHoaxes as apiGetHoaxes,
+  getOldHoaxes as apiGetOldHoaxes,
+} from '../api/apiCalls'
 import HoaxView from './HoaxView'
 import { useApiProgress } from '../shared/ApiProgress'
 import Spinner from './Spinner'
@@ -20,16 +23,40 @@ const HoaxFeed = () => {
   const path = username
     ? `/api/v1/users/${username}/hoaxes?page=`
     : `/api/v1/hoaxes?page=`
-  const pendingApiCall = useApiProgress('get', path)
+  const initialLoadHoaxesProgress = useApiProgress('get', path)
+
+  let lastHoaxId
+  const { content, last: lastHoax } = hoaxPage
+
+  if (content.length > 0) {
+    const lastHoaxIndex = content.length - 1
+    lastHoaxId = content[lastHoaxIndex].id
+  }
+
+  const loadOldHoaxesProgress = useApiProgress(
+    'get',
+    '/api/v1/hoaxes/' + lastHoaxId,
+    true
+  )
 
   useEffect(() => {
+    const loadHoaxes = async (page) => {
+      try {
+        const response = await apiGetHoaxes(page, username)
+        setHoaxPage((previousHoaxPage) => ({
+          ...response.data,
+          content: [...previousHoaxPage.content, ...response.data.content],
+        }))
+      } catch (error) {}
+    }
     loadHoaxes()
   }, [username])
 
-  const loadHoaxes = async (page) => {
-    if (pendingApiCall) return
+  const loadOldHoaxes = async () => {
+    if (loadOldHoaxesProgress) return
+
     try {
-      const response = await apiGetHoaxes(page, username)
+      const response = await apiGetOldHoaxes(lastHoaxId)
       setHoaxPage((previousHoaxPage) => ({
         ...response.data,
         content: [...previousHoaxPage.content, ...response.data.content],
@@ -37,12 +64,14 @@ const HoaxFeed = () => {
     } catch (error) {}
   }
 
-  const { content, last: lastHoaxes, number: pageNumber } = hoaxPage
-
   if (content.length === 0) {
     return (
       <div className='alert alert-warning text-center'>
-        {pendingApiCall ? <Spinner /> : translate('There are no hoaxes')}
+        {initialLoadHoaxesProgress ? (
+          <Spinner />
+        ) : (
+          translate('There are no hoaxes')
+        )}
       </div>
     )
   }
@@ -52,13 +81,13 @@ const HoaxFeed = () => {
       {content.map((hoax) => (
         <HoaxView key={hoax.id} hoax={hoax} />
       ))}
-      {!lastHoaxes && (
+      {!lastHoax && (
         <div
           className='alert alert-secondary text-center'
-          style={{ cursor: pendingApiCall ? 'not-allowed' : 'pointer' }}
-          onClick={() => loadHoaxes(pageNumber + 1)}
+          style={{ cursor: loadOldHoaxesProgress ? 'not-allowed' : 'pointer' }}
+          onClick={() => loadOldHoaxes()}
         >
-          {pendingApiCall ? <Spinner /> : translate('Load old Hoaxes')}
+          {loadOldHoaxesProgress ? <Spinner /> : translate('Load old Hoaxes')}
         </div>
       )}
     </div>
