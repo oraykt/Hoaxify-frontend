@@ -20,11 +20,6 @@ const HoaxFeed = () => {
 
   const { t: translate } = useTranslation()
 
-  const path = username
-    ? `/api/v1/users/${username}/hoaxes?page=`
-    : `/api/v1/hoaxes?page=`
-  const initialLoadHoaxesProgress = useApiProgress('get', path)
-
   let lastHoaxId
   const { content, last: lastHoax } = hoaxPage
 
@@ -33,11 +28,16 @@ const HoaxFeed = () => {
     lastHoaxId = content[lastHoaxIndex].id
   }
 
-  const loadOldHoaxesProgress = useApiProgress(
-    'get',
-    '/api/v1/hoaxes/' + lastHoaxId,
-    true
-  )
+  const path = username
+    ? `/api/v1/users/${username}/hoaxes?page=`
+    : `/api/v1/hoaxes?page=`
+  const initialLoadHoaxesProgress = useApiProgress('get', path)
+
+  const oldHoaxPath = username
+    ? `/api/v1/users/${username}/hoaxes/${lastHoaxId}`
+    : `/api/v1/hoaxes/${lastHoaxId}`
+
+  const loadOldHoaxesProgress = useApiProgress('get', oldHoaxPath, true)
 
   useEffect(() => {
     const loadHoaxes = async (page) => {
@@ -54,9 +54,8 @@ const HoaxFeed = () => {
 
   const loadOldHoaxes = async () => {
     if (loadOldHoaxesProgress) return
-
     try {
-      const response = await apiGetOldHoaxes(lastHoaxId)
+      const response = await apiGetOldHoaxes(lastHoaxId, username)
       setHoaxPage((previousHoaxPage) => ({
         ...response.data,
         content: [...previousHoaxPage.content, ...response.data.content],
