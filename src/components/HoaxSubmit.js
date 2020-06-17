@@ -1,9 +1,15 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useApiProgress } from '../shared/ApiProgress'
+import {
+  postHoax as apiPostHoax,
+  postHoaxAttachment as apiPostHoaxAttachment,
+} from '../api/apiCalls'
+
 import ProfileImage from './ProfileImage'
 import ButtonWithProgress from './ButtonWithProgress'
-import { postHoax as apiPostHoax } from '../api/apiCalls'
+import Input from './Input'
+import AutoUploadImage from './AutoUploadImage'
 
 const HoaxSubmit = () => {
   const { image, isLoggedIn } = useSelector((store) => ({
@@ -13,8 +19,15 @@ const HoaxSubmit = () => {
   const [focused, setFocused] = useState(false)
   const [hoax, setHoax] = useState('')
   const [errors, setErrors] = useState({})
+  const [newImage, setNewImage] = useState()
+  const [attachmentId, setAttachmentId] = useState()
 
-  const pendingApiCall = useApiProgress('post', '/api/v1/hoaxes')
+  const pendingApiCall = useApiProgress('post', '/api/v1/hoaxes', true)
+  const pendingFileUpload = useApiProgress(
+    'post',
+    '/api/v1/hoax-attachments',
+    true
+  )
 
   const textArea = useRef()
 
@@ -39,6 +52,7 @@ const HoaxSubmit = () => {
   const onClickHoaxify = async () => {
     const body = {
       content: hoax,
+      attachmentId,
     }
 
     try {
@@ -52,7 +66,29 @@ const HoaxSubmit = () => {
     }
   }
 
-  const { content: contentError } = errors
+  const onChangeFile = (event) => {
+    if (event.target.files.length < 1) {
+      return
+    }
+    const file = event.target.files[0]
+    const fileReader = new FileReader()
+    fileReader.onloadend = () => {
+      setNewImage(fileReader.result)
+      uploadFile(file)
+    }
+    fileReader.readAsDataURL(file)
+  }
+
+  const uploadFile = async (file) => {
+    const attachment = new FormData()
+    attachment.append('file', file)
+    try {
+      const response = await apiPostHoaxAttachment(attachment)
+      setAttachmentId(response.data.id)
+    } catch (error) {}
+  }
+
+  const { content: contentError, image: imageError } = errors
 
   let textAreaClass = 'form-control'
 
@@ -82,26 +118,45 @@ const HoaxSubmit = () => {
             <div className='invalid-feedback'>{contentError}</div>
           )}
           {focused && (
-            <div className='text-right mt-2'>
-              <ButtonWithProgress
-                className='btn btn-primary'
-                onClick={onClickHoaxify}
-                pendingApiCall={pendingApiCall}
-                disabled={pendingApiCall}
-                text='Hoaxify'
-              />
-              <button
-                className='btn btn-sm btn-danger d-inline-flex ml-2'
-                onClick={() => {
-                  setFocused(false)
-                  setHoax('')
-                  setErrors({})
-                }}
-                disabled={pendingApiCall}
-              >
-                <i className='material-icons'>close</i>
-              </button>
-            </div>
+            <Fragment>
+              {!newImage && (
+                <Input
+                  type='file'
+                  onChange={onChangeFile}
+                  error={imageError}
+                  accept='.jpeg,.jpg,.png'
+                />
+              )}
+
+              {newImage && (
+                <AutoUploadImage
+                  image={newImage}
+                  uploading={pendingFileUpload}
+                />
+              )}
+
+              <div className='text-right mt-2'>
+                <ButtonWithProgress
+                  className='btn btn-primary'
+                  onClick={onClickHoaxify}
+                  pendingApiCall={pendingApiCall}
+                  disabled={pendingApiCall || pendingFileUpload}
+                  text='Hoaxify'
+                />
+                <button
+                  className='btn btn-sm btn-danger d-inline-flex ml-2'
+                  onClick={() => {
+                    setFocused(false)
+                    setHoax('')
+                    setNewImage(undefined)
+                    setErrors({})
+                  }}
+                  disabled={pendingApiCall || pendingFileUpload}
+                >
+                  <i className='material-icons'>close</i>
+                </button>
+              </div>
+            </Fragment>
           )}
         </div>
       </div>
