@@ -59,6 +59,7 @@ const HoaxSubmit = () => {
       await apiPostHoax(body)
       setFocused(false)
       setHoax('')
+      setAttachmentId(undefined)
     } catch (error) {
       if (error.response.data.validationErrors) {
         setErrors(error.response.data.validationErrors)
@@ -149,6 +150,7 @@ const HoaxSubmit = () => {
                     setFocused(false)
                     setHoax('')
                     setNewImage(undefined)
+                    setAttachmentId(undefined)
                     setErrors({})
                   }}
                   disabled={pendingApiCall || pendingFileUpload}
