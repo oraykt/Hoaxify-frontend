@@ -5,6 +5,7 @@ import {
   getHoaxes as apiGetHoaxes,
   getOldHoaxes as apiGetOldHoaxes,
   getNewHoaxCount as apiGetNewHoaxCount,
+  getNewHoaxes as apiGetNewHoaxes,
 } from '../api/apiCalls'
 import HoaxView from './HoaxView'
 import { useApiProgress } from '../shared/ApiProgress'
@@ -43,7 +44,11 @@ const HoaxFeed = () => {
     ? `/api/v1/users/${username}/hoaxes/${lastHoaxId}`
     : `/api/v1/hoaxes/${lastHoaxId}`
 
+  const newHoaxPath = username
+    ? `/api/v1/users/${username}/hoaxes/${firstHoaxId}?direction=after`
+    : `/api/v1/hoaxes/${firstHoaxId}?direction=after`
   const loadOldHoaxesProgress = useApiProgress('get', oldHoaxPath, true)
+  const loadNewHoaxesProgress = useApiProgress('get', newHoaxPath, true)
 
   useEffect(() => {
     const loadHoaxes = async (page) => {
@@ -63,9 +68,7 @@ const HoaxFeed = () => {
       const response = await apiGetNewHoaxCount(firstHoaxId, username)
       setNewHoaxCount(response.data.count)
     }
-    let looper = setInterval(() => {
-      getCount()
-    }, 10000)
+    let looper = setInterval(getCount, 5000)
 
     return () => {
       clearInterval(looper)
@@ -80,6 +83,21 @@ const HoaxFeed = () => {
         ...response.data,
         content: [...previousHoaxPage.content, ...response.data.content],
       }))
+    } catch (error) {}
+  }
+
+  const loadNewHoaxes = async () => {
+    if (loadNewHoaxesProgress) return
+
+    try {
+      const response = await apiGetNewHoaxes(firstHoaxId, username)
+
+      setHoaxPage((previousHoaxPage) => ({
+        ...previousHoaxPage,
+        content: [...response.data, ...previousHoaxPage.content],
+      }))
+
+      setNewHoaxCount(0)
     } catch (error) {}
   }
 
@@ -98,8 +116,16 @@ const HoaxFeed = () => {
   return (
     <div>
       {newHoaxCount > 0 && (
-        <div className='alert alert-info text-center'>
-          {translate('There are new Hoaxes')}
+        <div
+          className='alert alert-info text-center'
+          style={{ cursor: loadNewHoaxesProgress ? 'not-allowed' : 'pointer' }}
+          onClick={() => loadNewHoaxes()}
+        >
+          {loadNewHoaxesProgress ? (
+            <Spinner />
+          ) : (
+            translate('There are new Hoaxes')
+          )}
         </div>
       )}
 
