@@ -33,7 +33,7 @@ const HoaxView = (props) => {
         <div className='pl-5'>
           <img
             className='img-fluid shadow'
-            src={'images/' + fileAttachment.name}
+            src={'images/attachments/' + fileAttachment.name}
             alt={content}
           />
         </div>
