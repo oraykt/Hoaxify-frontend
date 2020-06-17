@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import {
   getHoaxes as apiGetHoaxes,
   getOldHoaxes as apiGetOldHoaxes,
+  getNewHoaxCount as apiGetNewHoaxCount,
 } from '../api/apiCalls'
 import HoaxView from './HoaxView'
 import { useApiProgress } from '../shared/ApiProgress'
@@ -16,14 +17,19 @@ const HoaxFeed = () => {
     number: 0,
   })
 
+  const [newHoaxCount, setNewHoaxCount] = useState(0)
+
   const { username } = useParams()
 
   const { t: translate } = useTranslation()
 
-  let lastHoaxId
+  let firstHoaxId = 0,
+    lastHoaxId = 0
   const { content, last: lastHoax } = hoaxPage
 
   if (content.length > 0) {
+    firstHoaxId = content[0].id
+
     const lastHoaxIndex = content.length - 1
     lastHoaxId = content[lastHoaxIndex].id
   }
@@ -52,6 +58,20 @@ const HoaxFeed = () => {
     loadHoaxes()
   }, [username])
 
+  useEffect(() => {
+    const getCount = async () => {
+      const response = await apiGetNewHoaxCount(firstHoaxId, username)
+      setNewHoaxCount(response.data.count)
+    }
+    let looper = setInterval(() => {
+      getCount()
+    }, 10000)
+
+    return () => {
+      clearInterval(looper)
+    }
+  }, [firstHoaxId, username])
+
   const loadOldHoaxes = async () => {
     if (loadOldHoaxesProgress) return
     try {
@@ -77,12 +97,18 @@ const HoaxFeed = () => {
 
   return (
     <div>
+      {newHoaxCount > 0 && (
+        <div className='alert alert-info text-center'>
+          {translate('There are new Hoaxes')}
+        </div>
+      )}
+
       {content.map((hoax) => (
         <HoaxView key={hoax.id} hoax={hoax} />
       ))}
       {!lastHoax && (
         <div
-          className='alert alert-secondary text-center'
+          className='alert alert-secondary text-center mb-2'
           style={{ cursor: loadOldHoaxesProgress ? 'not-allowed' : 'pointer' }}
           onClick={() => loadOldHoaxes()}
         >

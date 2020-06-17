@@ -50,3 +50,10 @@ export const getOldHoaxes = (hoaxId, username) => {
     : `/api/v1/hoaxes/${hoaxId}`
   return axios.get(path)
 }
+
+export const getNewHoaxCount = (hoaxId, username) => {
+  const path = username
+    ? `/api/v1/users/${username}/hoaxes/${hoaxId}?count=true`
+    : `/api/v1/hoaxes/${hoaxId}?count=true`
+  return axios.get(path)
+}

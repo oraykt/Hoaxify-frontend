@@ -26,6 +26,7 @@ i18n.use(initReactI18next).init({
         'My Profile': 'My Profile',
         'There are no hoaxes': 'There are no hoaxes',
         'Load old Hoaxes': 'Load old Hoaxes',
+        'There are new Hoaxes': 'There are new Hoaxes',
       },
     },
     tr: {
@@ -51,6 +52,7 @@ i18n.use(initReactI18next).init({
         'My Profile': 'Hesabım',
         'There are no hoaxes': 'Hoax bulunamadı',
         'Load old Hoaxes': 'Eskileri getir',
+        'There are new Hoaxes': 'Yeni hoaxlar var',
       },
     },
     pl: {
@@ -76,6 +78,7 @@ i18n.use(initReactI18next).init({
         'My Profile': 'Mój Profil',
         'There are no hoaxes': 'Hoax nie znaleziono',
         'Load old Hoaxes': 'Przynieś stare ',
+        'There are new Hoaxes': 'Załaduj nowe',
       },
     },
   },
