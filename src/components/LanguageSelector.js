@@ -18,7 +18,7 @@ import { changeHeaderLanguage } from '../api/apiCalls'
 //   },
 // ]
 
-const LanguageSelector = (props) => {
+const LanguageSelector = () => {
   const { i18n } = useTranslation()
 
   const onChangeLanguage = (langCode) => {

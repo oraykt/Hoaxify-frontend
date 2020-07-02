@@ -13,7 +13,7 @@ const UserList = () => {
   const [page, setPage] = useState({
     content: [],
     size: 5,
-    number: 0,
+    number: 0
   })
 
   const [loadFailure, setLoadFailure] = useState(false)

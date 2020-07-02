@@ -32,7 +32,10 @@
     "dev": "set PORT=3001 && react-scripts start"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ]
   },
   "browserslist": {
     "production": [
@@ -49,5 +52,8 @@
   "proxy": "http://localhost:8082",
   "resolutions": {
     "yargs-parser": "^13.1.2"
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.20.3"
   }
 }

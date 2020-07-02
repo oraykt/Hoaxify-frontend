@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { signupHandler } from '../actions/auth'
 import Input from '../components/Input'
@@ -6,12 +7,12 @@ import ButtonWithProgress from '../components/ButtonWithProgress'
 import { useTranslation } from 'react-i18next'
 import { useApiProgress } from '../shared/ApiProgress'
 
-const UserSignupPage = (props) => {
+const UserSignupPage = ({ history }) => {
   const [form, setForm] = useState({
     username: null,
     displayName: null,
     password: null,
-    passwordRepeat: null,
+    passwordRepeat: null
   })
 
   const [errors, setErrors] = useState({})
@@ -29,7 +30,7 @@ const UserSignupPage = (props) => {
     setErrors((previousErrors) => ({ ...previousErrors, [name]: undefined }))
     setForm((previousForm) => ({
       ...previousForm,
-      [name]: value,
+      [name]: value
     }))
   }
 
@@ -37,12 +38,12 @@ const UserSignupPage = (props) => {
     try {
       event.preventDefault()
 
-      const { push } = props.history
+      const { push } = history
       const { username, displayName, password } = form
       const body = {
         username,
         displayName,
-        password,
+        password
       }
       await dispatch(signupHandler(body))
       push('/')
@@ -55,7 +56,7 @@ const UserSignupPage = (props) => {
   const {
     username: usernameError,
     displayName: displayNameError,
-    password: passwordError,
+    password: passwordError
   } = errors
 
   let passwordRepeatError
@@ -106,6 +107,10 @@ const UserSignupPage = (props) => {
       </form>
     </div>
   )
+}
+
+UserSignupPage.propTypes = {
+  history: PropTypes.object
 }
 
 export default UserSignupPage

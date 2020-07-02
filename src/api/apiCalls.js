@@ -27,9 +27,9 @@ export const changeHeaderLanguage = (language) => {
 export const setAuthorizationHeader = ({ username, password, isLoggedIn }) => {
   if (isLoggedIn) {
     const authorizationValue = `Basic ${btoa(username + ':' + password)}`
-    axios.defaults.headers['Authorization'] = authorizationValue
+    axios.defaults.headers.Authorization = authorizationValue
   } else {
-    delete axios.defaults.headers['Authorization']
+    delete axios.defaults.headers.Authorization
   }
 }
 

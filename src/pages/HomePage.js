@@ -6,7 +6,7 @@ import HoaxFeed from '../components/HoaxFeed'
 
 const HomePage = () => {
   const { isLoggedIn } = useSelector((store) => ({
-    isLoggedIn: store.isLoggedIn,
+    isLoggedIn: store.isLoggedIn
   }))
   return (
     <div className='container'>

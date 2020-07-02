@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-export default () => {
+const Spinner = () => {
   const { t: translate } = useTranslation()
   return (
     <div className='d-flex justify-content-center'>
@@ -11,3 +11,5 @@ export default () => {
     </div>
   )
 }
+
+export default Spinner

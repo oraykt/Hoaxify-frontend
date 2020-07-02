@@ -11,7 +11,7 @@ import TopBar from './components/TopBar'
 
 const App = () => {
   const { isLoggedIn } = useSelector((store) => ({
-    isLoggedIn: store.isLoggedIn,
+    isLoggedIn: store.isLoggedIn
   }))
 
   return (

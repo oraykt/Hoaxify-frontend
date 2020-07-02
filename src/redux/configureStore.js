@@ -9,12 +9,12 @@ const secureLs = new SecureLS()
 const getStateFromStorage = () => {
   const hoaxAuth = secureLs.get('hoax-auth')
 
-  let stateInLocalStorage = {
+  const stateInLocalStorage = {
     isLoggedIn: false,
     username: undefined,
     displayName: undefined,
     image: undefined,
-    password: undefined,
+    password: undefined
   }
   if (hoaxAuth) return hoaxAuth
   return stateInLocalStorage

@@ -26,8 +26,8 @@ i18n.use(initReactI18next).init({
         'My Profile': 'My Profile',
         'There are no hoaxes': 'There are no hoaxes',
         'Load old Hoaxes': 'Load old Hoaxes',
-        'There are new Hoaxes': 'There are new Hoaxes',
-      },
+        'There are new Hoaxes': 'There are new Hoaxes'
+      }
     },
     tr: {
       translations: {
@@ -52,8 +52,8 @@ i18n.use(initReactI18next).init({
         'My Profile': 'Hesabım',
         'There are no hoaxes': 'Hoax bulunamadı',
         'Load old Hoaxes': 'Eskileri getir',
-        'There are new Hoaxes': 'Yeni hoaxlar var',
-      },
+        'There are new Hoaxes': 'Yeni hoaxlar var'
+      }
     },
     pl: {
       translations: {
@@ -78,9 +78,9 @@ i18n.use(initReactI18next).init({
         'My Profile': 'Mój Profil',
         'There are no hoaxes': 'Hoax nie znaleziono',
         'Load old Hoaxes': 'Przynieś stare ',
-        'There are new Hoaxes': 'Załaduj nowe',
-      },
-    },
+        'There are new Hoaxes': 'Załaduj nowe'
+      }
+    }
   },
   fallbackLng: 'en',
   ns: ['translations'],
@@ -88,11 +88,11 @@ i18n.use(initReactI18next).init({
   keySeparator: false,
   interpolation: {
     escapeValue: false,
-    formatSeparator: ',',
+    formatSeparator: ','
   },
   react: {
-    wait: true,
-  },
+    wait: true
+  }
 })
 
 const timeAgoTr = (number, index) => {
@@ -110,7 +110,7 @@ const timeAgoTr = (number, index) => {
     ['1 ay önce', '1 ay içinde'],
     ['%s ay önce', '%s ay içinde'],
     ['1 yıl önce', '1 yıl içinde'],
-    ['%s yıl önce', '%s yıl içinde'],
+    ['%s yıl önce', '%s yıl içinde']
   ][index]
 }
 
@@ -137,7 +137,7 @@ const pl = [
   ['%s dni temu', 'za %s dni'],
   ['%s tygodnie temu', 'za %s tygodnie'],
   ['%s miesiące temu', 'za %s miesiące'],
-  ['%s lata temu', 'za %s lata'],
+  ['%s lata temu', 'za %s lata']
 ]
 
 const timeAgoPl = (number, index) => {
@@ -146,7 +146,7 @@ const timeAgoPl = (number, index) => {
   // for all other cases use index value as it is (0-13)
   return pl[
     index & 1
-      ? number % 10 > 4 || number % 10 < 2 || 1 === ~~(number / 10) % 10
+      ? number % 10 > 4 || number % 10 < 2 || ~~(number / 10) % 10 === 1
         ? index
         : ++index / 2 + 13
       : index

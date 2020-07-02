@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -19,17 +20,19 @@ const ProfileCard = (props) => {
   const { t: translate } = useTranslation()
   const dispatch = useDispatch()
   const { username: loggedInUsername } = useSelector((store) => ({
-    username: store.username,
+    username: store.username
   }))
   const { username: pathUsername } = useParams()
 
+  const { user: loggedUser } = props
+
   useEffect(() => {
-    setUser(props.user)
-  }, [props.user])
+    setUser(loggedUser)
+  }, [loggedUser])
 
   useEffect(() => setEditable(pathUsername === loggedInUsername), [
     pathUsername,
-    loggedInUsername,
+    loggedInUsername
   ])
 
   const { username, displayName, image } = user
@@ -48,13 +51,13 @@ const ProfileCard = (props) => {
   useEffect(() => {
     setValidationErrors((previousErrors) => ({
       ...previousErrors,
-      displayName: undefined,
+      displayName: undefined
     }))
   }, [updatedDisplayName])
   useEffect(() => {
     setValidationErrors((previousErrors) => ({
       ...previousErrors,
-      image: undefined,
+      image: undefined
     }))
   }, [newImage])
 
@@ -65,7 +68,7 @@ const ProfileCard = (props) => {
     }
     const body = {
       displayName: updatedDisplayName,
-      image,
+      image
     }
     try {
       const response = await apiUpdateUser(username, body)
@@ -166,6 +169,10 @@ const ProfileCard = (props) => {
       </div>
     </div>
   )
+}
+
+ProfileCard.propTypes = {
+  user: PropTypes.object
 }
 
 export default ProfileCard

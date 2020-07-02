@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const Input = (props) => {
   const {
@@ -9,7 +10,7 @@ const Input = (props) => {
     type,
     defaultValue,
     disabled = false,
-    accept,
+    accept
   } = props
 
   let className = 'form-control'
@@ -35,6 +36,17 @@ const Input = (props) => {
       <div className='invalid-feedback'>{error}</div>
     </div>
   )
+}
+
+Input.propTypes = {
+  label: PropTypes.string,
+  error: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  defaultValue: PropTypes.string,
+  disabled: PropTypes.bool,
+  accept: PropTypes.string
 }
 
 export default Input

@@ -7,11 +7,11 @@ import ProfileCard from '../components/ProfileCard'
 import Spinner from '../components/Spinner'
 import HoaxFeed from '../components/HoaxFeed'
 
-const UserPage = (props) => {
+const UserPage = () => {
   const [user, setUser] = useState({
     username: undefined,
     displayName: undefined,
-    image: undefined,
+    image: undefined
   })
   const [notFound, setNotFound] = useState(false)
   const { t: translate } = useTranslation()

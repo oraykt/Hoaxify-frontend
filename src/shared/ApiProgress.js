@@ -49,7 +49,7 @@ export const useApiProgress = (apiMethod, apiPath, strictPath = false) => {
 
     registerInterceptors()
 
-    return function unmount() {
+    return function unmount () {
       unregisterInterceptors()
     }
   }, [apiMethod, apiPath, strictPath])

@@ -7,14 +7,14 @@ import { logout as actionLogout } from '../actions/auth'
 
 import ProfileImage from './ProfileImage'
 
-const TopBar = (props) => {
+const TopBar = () => {
   const { t: translate } = useTranslation()
 
   const reduxState = useSelector((store) => ({
     isLoggedIn: store.isLoggedIn,
     username: store.username,
     displayName: store.displayName,
-    image: store.image,
+    image: store.image
   }))
 
   const { username, displayName, image, isLoggedIn } = reduxState

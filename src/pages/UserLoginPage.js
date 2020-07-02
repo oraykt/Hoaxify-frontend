@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import Input from '../components/Input'
 import ButtonWithProgress from '../components/ButtonWithProgress'
 import { useTranslation } from 'react-i18next'
@@ -6,7 +7,7 @@ import { useApiProgress } from '../shared/ApiProgress'
 import { useDispatch } from 'react-redux'
 import { loginHandler } from '../actions/auth'
 
-const UserLoginPage = (props) => {
+const UserLoginPage = ({ history }) => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [error, setError] = useState()
@@ -25,9 +26,9 @@ const UserLoginPage = (props) => {
       event.preventDefault()
       const creds = {
         username,
-        password,
+        password
       }
-      const { push } = props.history
+      const { push } = history
       setError(undefined)
 
       await dispatch(loginHandler(creds))
@@ -67,6 +68,10 @@ const UserLoginPage = (props) => {
       </form>
     </div>
   )
+}
+
+UserLoginPage.propTypes = {
+  history: PropTypes.object 
 }
 
 export default UserLoginPage

@@ -1,8 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-const AutoUploadImage = (props) => {
-  const { image, uploading } = props
-
+const AutoUploadImage = ({ image, uploading }) => {
   const overlayStyle = {
     position: 'absolute',
     top: '0',
@@ -13,7 +12,7 @@ const AutoUploadImage = (props) => {
     width: '100%',
     opacity: uploading ? '1' : '0',
     transition: '0.5s ease',
-    'backgroundColor': '#00000099',
+    backgroundColor: '#00000099'
   }
 
   return (
@@ -28,6 +27,11 @@ const AutoUploadImage = (props) => {
       </div>
     </div>
   )
+}
+
+AutoUploadImage.propTypes = {
+  image: PropTypes.string,
+  uploading: PropTypes.bool
 }
 
 export default AutoUploadImage

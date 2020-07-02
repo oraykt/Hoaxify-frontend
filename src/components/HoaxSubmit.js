@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useApiProgress } from '../shared/ApiProgress'
 import {
   postHoax as apiPostHoax,
-  postHoaxAttachment as apiPostHoaxAttachment,
+  postHoaxAttachment as apiPostHoaxAttachment
 } from '../api/apiCalls'
 
 import ProfileImage from './ProfileImage'
@@ -14,7 +14,7 @@ import AutoUploadImage from './AutoUploadImage'
 const HoaxSubmit = () => {
   const { image, isLoggedIn } = useSelector((store) => ({
     image: store.image,
-    isLoggedIn: store.isLoggedIn,
+    isLoggedIn: store.isLoggedIn
   }))
   const [focused, setFocused] = useState(false)
   const [hoax, setHoax] = useState('')
@@ -52,7 +52,7 @@ const HoaxSubmit = () => {
   const onClickHoaxify = async () => {
     const body = {
       content: hoax,
-      attachmentId,
+      attachmentId
     }
 
     try {
@@ -86,7 +86,9 @@ const HoaxSubmit = () => {
     try {
       const response = await apiPostHoaxAttachment(attachment)
       setAttachmentId(response.data.id)
-    } catch (error) {}
+    } catch (error) {
+      console.error("INTERNAL ERROR")
+    }
   }
 
   const { content: contentError, image: imageError } = errors

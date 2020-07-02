@@ -5,7 +5,7 @@ const defaultState = {
   username: undefined,
   displayName: undefined,
   image: undefined,
-  password: undefined,
+  password: undefined
 }
 
 const reducer = (state = { ...defaultState }, action) => {
@@ -16,12 +16,12 @@ const reducer = (state = { ...defaultState }, action) => {
     case LOG_IN:
       return {
         isLoggedIn: true,
-        ...payload,
+        ...payload
       }
     case UPDATE_PROFILE:
       return {
         ...state,
-        ...payload,
+        ...payload
       }
     default:
       return state

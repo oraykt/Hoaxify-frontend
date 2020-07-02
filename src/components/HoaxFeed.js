@@ -5,7 +5,7 @@ import {
   getHoaxes as apiGetHoaxes,
   getOldHoaxes as apiGetOldHoaxes,
   getNewHoaxCount as apiGetNewHoaxCount,
-  getNewHoaxes as apiGetNewHoaxes,
+  getNewHoaxes as apiGetNewHoaxes
 } from '../api/apiCalls'
 import HoaxView from './HoaxView'
 import { useApiProgress } from '../shared/ApiProgress'
@@ -15,7 +15,7 @@ const HoaxFeed = () => {
   const [hoaxPage, setHoaxPage] = useState({
     content: [],
     last: true,
-    number: 0,
+    number: 0
   })
 
   const [newHoaxCount, setNewHoaxCount] = useState(0)
@@ -24,8 +24,8 @@ const HoaxFeed = () => {
 
   const { t: translate } = useTranslation()
 
-  let firstHoaxId = 0,
-    lastHoaxId = 0
+  let firstHoaxId = 0
+  let lastHoaxId = 0
   const { content, last: lastHoax } = hoaxPage
 
   if (content.length > 0) {
@@ -37,7 +37,7 @@ const HoaxFeed = () => {
 
   const path = username
     ? `/api/v1/users/${username}/hoaxes?page=`
-    : `/api/v1/hoaxes?page=`
+    : '/api/v1/hoaxes?page='
   const initialLoadHoaxesProgress = useApiProgress('get', path)
 
   const oldHoaxPath = username
@@ -56,9 +56,11 @@ const HoaxFeed = () => {
         const response = await apiGetHoaxes(page, username)
         setHoaxPage((previousHoaxPage) => ({
           ...response.data,
-          content: [...previousHoaxPage.content, ...response.data.content],
+          content: [...previousHoaxPage.content, ...response.data.content]
         }))
-      } catch (error) {}
+      } catch (error) {
+        console.error("INTERNAL ERROR")
+      }
     }
     loadHoaxes()
   }, [username])
@@ -68,7 +70,7 @@ const HoaxFeed = () => {
       const response = await apiGetNewHoaxCount(firstHoaxId, username)
       setNewHoaxCount(response.data.count)
     }
-    let looper = setInterval(getCount, 5000)
+    const looper = setInterval(getCount, 5000)
 
     return () => {
       clearInterval(looper)
@@ -81,9 +83,11 @@ const HoaxFeed = () => {
       const response = await apiGetOldHoaxes(lastHoaxId, username)
       setHoaxPage((previousHoaxPage) => ({
         ...response.data,
-        content: [...previousHoaxPage.content, ...response.data.content],
+        content: [...previousHoaxPage.content, ...response.data.content]
       }))
-    } catch (error) {}
+    } catch (error) {
+      console.error("INTERNAL ERROR")
+    }
   }
 
   const loadNewHoaxes = async () => {
@@ -94,11 +98,13 @@ const HoaxFeed = () => {
 
       setHoaxPage((previousHoaxPage) => ({
         ...previousHoaxPage,
-        content: [...response.data, ...previousHoaxPage.content],
+        content: [...response.data, ...previousHoaxPage.content]
       }))
 
       setNewHoaxCount(0)
-    } catch (error) {}
+    } catch (error) {
+      console.error("INTERNAL ERROR")
+    }
   }
 
   if (content.length === 0) {

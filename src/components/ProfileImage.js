@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import defaultPicture from '../assets/profile.png'
 const ProfileImage = (props) => {
   const { image, tempimage } = props
@@ -6,7 +7,6 @@ const ProfileImage = (props) => {
   if (image) {
     imageSource = 'images/profile/' + image
   }
-
   return (
     <img
       src={tempimage || imageSource}
@@ -17,6 +17,11 @@ const ProfileImage = (props) => {
       }}
     />
   )
+}
+
+ProfileImage.propTypes = {
+  image: PropTypes.string,
+  tempimage: PropTypes.string
 }
 
 export default ProfileImage
