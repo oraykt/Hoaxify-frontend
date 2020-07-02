@@ -13,7 +13,7 @@ const AutoUploadImage = (props) => {
     width: '100%',
     opacity: uploading ? '1' : '0',
     transition: '0.5s ease',
-    'background-color': '#00000099',
+    'backgroundColor': '#00000099',
   }
 
   return (
