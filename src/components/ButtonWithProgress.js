@@ -25,7 +25,7 @@ ButtonWithProgress.propTypes = {
   onClick: PropTypes.func,
   pendingApiCall: PropTypes.bool,
   disabled: PropTypes.bool,
-  text: PropTypes.string
+  text: PropTypes.any
 }
 
 export default ButtonWithProgress
