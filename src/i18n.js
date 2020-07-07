@@ -26,7 +26,9 @@ i18n.use(initReactI18next).init({
         'My Profile': 'My Profile',
         'There are no hoaxes': 'There are no hoaxes',
         'Load old Hoaxes': 'Load old Hoaxes',
-        'There are new Hoaxes': 'There are new Hoaxes'
+        'There are new Hoaxes': 'There are new Hoaxes',
+        'Delete Hoax': 'Delete Hoax',
+        'Are you sure to delete hoax?': 'Are you sure to delete hoax?'
       }
     },
     tr: {
@@ -52,7 +54,9 @@ i18n.use(initReactI18next).init({
         'My Profile': 'Hesabım',
         'There are no hoaxes': 'Hoax bulunamadı',
         'Load old Hoaxes': 'Eskileri getir',
-        'There are new Hoaxes': 'Yeni hoaxlar var'
+        'There are new Hoaxes': 'Yeni hoaxlar var',
+        'Delete Hoax': 'Hoax\'u sil',
+        'Are you sure to delete hoax?': 'Silmek istediğinize emin misiniz?'
       }
     },
     pl: {
@@ -78,7 +82,9 @@ i18n.use(initReactI18next).init({
         'My Profile': 'Mój Profil',
         'There are no hoaxes': 'Hoax nie znaleziono',
         'Load old Hoaxes': 'Przynieś stare ',
-        'There are new Hoaxes': 'Załaduj nowe'
+        'There are new Hoaxes': 'Załaduj nowe',
+        'Delete Hoax': 'Usuń przedmiot',
+        'Are you sure to delete hoax?': 'czy jesteś pewny że chcesz usunąć?'
       }
     }
   },
