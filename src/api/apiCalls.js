@@ -72,3 +72,7 @@ export const postHoaxAttachment = (attachment) => {
 export const deleteHoax = (hoaxId)=>{
   return axios.delete(`/api/v1/hoaxes/${hoaxId}`)
 }
+
+export const deleteAccount = (username)=>{
+  return axios.delete(`/api/v1/users/${username}`)
+}

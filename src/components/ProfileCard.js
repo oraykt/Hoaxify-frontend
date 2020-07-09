@@ -1,14 +1,15 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useApiProgress } from '../shared/ApiProgress'
-import { updateUser as apiUpdateUser } from '../api/apiCalls'
-import { updateProfile as updateProfileState } from '../actions/auth'
+import { updateUser as apiUpdateUser, deleteAccount as apiDeleteAccount } from '../api/apiCalls'
+import { updateProfile as updateProfileState, logout as actionLogout } from '../actions/auth'
 import Input from './Input'
 import ProfileImage from './ProfileImage'
 import ButtonWithProgress from './ButtonWithProgress'
+import Modal from './Modal'
 
 const ProfileCard = (props) => {
   const [inEditMode, setInEditMode] = useState(false)
@@ -17,8 +18,10 @@ const ProfileCard = (props) => {
   const [editable, setEditable] = useState(false)
   const [newImage, setNewImage] = useState()
   const [validationErrors, setValidationErrors] = useState({})
+  const [modalVisible, setModalVisible] = useState(false)
   const { t: translate } = useTranslation()
   const dispatch = useDispatch()
+  const history = useHistory()
   const { username: loggedInUsername } = useSelector((store) => ({
     username: store.username
   }))
@@ -38,6 +41,7 @@ const ProfileCard = (props) => {
   const { username, displayName, image } = user
 
   const pendingApiCall = useApiProgress('put', '/api/v1/users/' + username)
+  const pendingApiCallForDelete = useApiProgress('delete', `/api/v1/users/${username}`, true)
 
   useEffect(() => {
     if (!inEditMode) {
@@ -94,9 +98,22 @@ const ProfileCard = (props) => {
     fileReader.readAsDataURL(file)
   }
 
+  const onClickRemoveCancel = ()=>{
+    setModalVisible(false)
+  }
+
+  const onClickDeleteAccount = async()=>{
+    await apiDeleteAccount(username)
+    setModalVisible(false)
+    dispatch(actionLogout())
+    history.push('/')
+  }
+
+
   const { displayName: displayNameError, image: imageError } = validationErrors
 
   return (
+    <Fragment>
     <div className='card text-center'>
       <div className='card-header'>
         <ProfileImage
@@ -115,13 +132,24 @@ const ProfileCard = (props) => {
               {displayName}@{username}
             </h3>
             {editable && (
-              <button
-                className='btn btn-success d-inline-flex'
-                onClick={() => setInEditMode(true)}
-              >
-                {' '}
-                <i className='material-icons'>edit</i> {translate('Edit')}
-              </button>
+              <Fragment>
+                <button
+                  className='btn btn-success d-inline-flex'
+                  onClick={() => setInEditMode(true)}
+                >
+                  {' '}
+                  <i className='material-icons'>edit</i> {translate('Edit')}
+                </button>
+                <div className="pt-2">
+                <button
+                  className='btn btn-danger d-inline-flex'
+                  onClick={() => setModalVisible(true)}
+                >
+                  {' '}
+                  <i className='material-icons'>directions_run</i> {translate('Delete Account')}
+                </button>
+                </div>
+              </Fragment>
             )}
           </Fragment>
         )}
@@ -168,6 +196,24 @@ const ProfileCard = (props) => {
         )}
       </div>
     </div>
+    <Modal 
+    visible={modalVisible} 
+    onClickCancel={onClickRemoveCancel}
+    onClickDelete={onClickDeleteAccount}
+    pendingApiCall={pendingApiCallForDelete}
+    title={translate('Delete Account')}
+    message={ 
+      <div>
+        <div>
+          <strong>
+            {translate('Are you sure to delete your account?')}
+          </strong>
+        </div>
+        <span>{}</span>
+      </div>
+    }
+    />
+    </Fragment>
   )
 }
 

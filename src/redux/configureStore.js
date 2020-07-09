@@ -32,7 +32,7 @@ const configureStore = () => {
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   const store = createStore(
     authReducer,
-    getStateFromStorage(),
+    initialState,
     composeEnhancers(applyMiddleware(thunk))
   )
 

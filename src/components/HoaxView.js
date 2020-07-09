@@ -51,8 +51,8 @@ const HoaxView = (props) => {
           </div>
           {ownedByLoggedInUser && (
             <button className="btn btn-delete-link" onClick={()=>{setModalVisible(true)}}>
-            <i className="material-icons">delete_outline</i>
-          </button>
+              <i className="material-icons">delete_outline</i>
+            </button>
           )}
         </div>
         <div className='pl-5 mb-3'>{content}</div>
@@ -66,7 +66,7 @@ const HoaxView = (props) => {
           </div>
         )}
       </div>
-      <Modal visible={modalVisible} onClickDelete={onClickDeleteHoax} onClickCancel={onClickCancel} pendingApiCall={pendingApiCall} message={ 
+      <Modal visible={modalVisible} title={translate('Delete Hoax')} onClickDelete={onClickDeleteHoax} onClickCancel={onClickCancel} pendingApiCall={pendingApiCall} message={ 
         <div>
           <div>
             <strong>

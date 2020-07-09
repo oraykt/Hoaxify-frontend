@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import ButtonWithProgress from './ButtonWithProgress';
 
-const Modal = ({visible, onClickDelete, onClickCancel, message, pendingApiCall}) => {
+const Modal = ({title, visible, onClickDelete, onClickCancel, message, pendingApiCall}) => {
 
   const {t:translate} = useTranslation();
 
@@ -17,14 +17,14 @@ const Modal = ({visible, onClickDelete, onClickCancel, message, pendingApiCall})
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">{translate('Delete Hoax')}</h5>
+            <h5 className="modal-title">{translate(title)}</h5>
           </div>
           <div className="modal-body">
             {message}
           </div>
           <div className="modal-footer">
             <button className="btn btn-secondary" disabled={pendingApiCall} onClick={onClickCancel}>{translate('Cancel')}</button>
-            <ButtonWithProgress className="btn btn-danger" onClick={onClickDelete} pendingApiCall={pendingApiCall} text={translate('Delete Hoax')} disabled={pendingApiCall}/>
+            <ButtonWithProgress className="btn btn-danger" onClick={onClickDelete} pendingApiCall={pendingApiCall} text={translate(title)} disabled={pendingApiCall}/>
           </div>
         </div>
       </div>
@@ -33,10 +33,11 @@ const Modal = ({visible, onClickDelete, onClickCancel, message, pendingApiCall})
 }
 
 Modal.propTypes={
+  title: PropTypes.string,
   visible: PropTypes.bool,
   onClickDelete: PropTypes.func,
   onClickCancel: PropTypes.func,
-  message: PropTypes.any,
+  message: PropTypes.object,
   pendingApiCall: PropTypes.bool
 }
 
