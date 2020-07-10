@@ -59,7 +59,7 @@ const HoaxFeed = () => {
           content: [...previousHoaxPage.content, ...response.data.content]
         }))
       } catch (error) {
-        console.error("INTERNAL ERROR")
+        console.error('INTERNAL ERROR')
       }
     }
     loadHoaxes()
@@ -86,7 +86,7 @@ const HoaxFeed = () => {
         content: [...previousHoaxPage.content, ...response.data.content]
       }))
     } catch (error) {
-      console.error("INTERNAL ERROR")
+      console.error('INTERNAL ERROR')
     }
   }
 
@@ -103,12 +103,12 @@ const HoaxFeed = () => {
 
       setNewHoaxCount(0)
     } catch (error) {
-      console.error("INTERNAL ERROR")
+      console.error('INTERNAL ERROR')
     }
   }
 
-  const onDeleteHoax = hoaxId =>{
-    setHoaxPage(previousHoaxPage=>({
+  const onDeleteHoax = (hoaxId) => {
+    setHoaxPage((previousHoaxPage) => ({
       ...previousHoaxPage,
       content: previousHoaxPage.content.filter((hoax) => hoax.id !== hoaxId)
     }))
@@ -116,7 +116,7 @@ const HoaxFeed = () => {
 
   if (content.length === 0) {
     return (
-      <div className='alert alert-warning text-center'>
+      <div className="alert alert-warning text-center">
         {initialLoadHoaxesProgress ? (
           <Spinner />
         ) : (
@@ -130,7 +130,7 @@ const HoaxFeed = () => {
     <div>
       {newHoaxCount > 0 && (
         <div
-          className='alert alert-info text-center'
+          className="alert alert-info text-center"
           style={{ cursor: loadNewHoaxesProgress ? 'not-allowed' : 'pointer' }}
           onClick={() => loadNewHoaxes()}
         >
@@ -143,11 +143,11 @@ const HoaxFeed = () => {
       )}
 
       {content.map((hoax) => (
-        <HoaxView key={hoax.id} hoax={hoax} onDeleteHoax={onDeleteHoax}/>
+        <HoaxView key={hoax.id} hoax={hoax} onDeleteHoax={onDeleteHoax} />
       ))}
       {!lastHoax && (
         <div
-          className='alert alert-secondary text-center mb-2'
+          className="alert alert-secondary text-center mb-2"
           style={{ cursor: loadOldHoaxesProgress ? 'not-allowed' : 'pointer' }}
           onClick={() => loadOldHoaxes()}
         >

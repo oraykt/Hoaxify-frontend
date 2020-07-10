@@ -71,7 +71,7 @@ const UserLoginPage = ({ history }) => {
 }
 
 UserLoginPage.propTypes = {
-  history: PropTypes.object 
+  history: PropTypes.object
 }
 
 export default UserLoginPage

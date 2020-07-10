@@ -87,7 +87,7 @@ const HoaxSubmit = () => {
       const response = await apiPostHoaxAttachment(attachment)
       setAttachmentId(response.data.id)
     } catch (error) {
-      console.error("INTERNAL ERROR")
+      console.error('INTERNAL ERROR')
     }
   }
 

@@ -98,121 +98,120 @@ const ProfileCard = (props) => {
     fileReader.readAsDataURL(file)
   }
 
-  const onClickRemoveCancel = ()=>{
+  const onClickRemoveCancel = () => {
     setModalVisible(false)
   }
 
-  const onClickDeleteAccount = async()=>{
+  const onClickDeleteAccount = async () => {
     await apiDeleteAccount(username)
     setModalVisible(false)
     dispatch(actionLogout())
     history.push('/')
   }
 
-
   const { displayName: displayNameError, image: imageError } = validationErrors
 
   return (
     <Fragment>
-    <div className='card text-center'>
-      <div className='card-header'>
-        <ProfileImage
-          className='rounded-circle shadow'
-          image={image}
-          alt={`${username} profile`}
-          width='200'
-          height='200'
-          tempimage={newImage}
-        />
-      </div>
-      <div className='card-body'>
-        {!inEditMode && (
-          <Fragment>
-            <h3>
-              {displayName}@{username}
-            </h3>
-            {editable && (
-              <Fragment>
-                <button
-                  className='btn btn-success d-inline-flex'
-                  onClick={() => setInEditMode(true)}
-                >
-                  {' '}
-                  <i className='material-icons'>edit</i> {translate('Edit')}
-                </button>
-                <div className="pt-2">
-                <button
-                  className='btn btn-danger d-inline-flex'
-                  onClick={() => setModalVisible(true)}
-                >
-                  {' '}
-                  <i className='material-icons'>directions_run</i> {translate('Delete Account')}
-                </button>
-                </div>
-              </Fragment>
-            )}
-          </Fragment>
-        )}
-        {inEditMode && (
-          <Fragment>
-            <div className=''>
-              <Input
-                label={translate('Change Display Name')}
-                defaultValue={displayName}
-                onChange={(event) => setUpdatedDisplayName(event.target.value)}
-                disabled={pendingApiCall}
-                error={displayNameError}
-              />
-              <Input
-                type='file'
-                onChange={onChangeFile}
-                error={imageError}
-                accept='.jpeg,.jpg,.png'
-              />
-              <div className='mt-3'>
-                <ButtonWithProgress
-                  className='btn btn-primary d-inline-flex'
-                  onClick={onClickSave}
-                  disabled={pendingApiCall}
-                  pendingApiCall={pendingApiCall}
-                  text={
-                    <Fragment>
-                      {' '}
-                      <i className='material-icons'>save</i> {translate('Save')}
-                    </Fragment>
-                  }
-                ></ButtonWithProgress>
-                <button
-                  className='btn btn-danger d-inline-flex ml-2'
-                  onClick={() => setInEditMode(false)}
-                  disabled={pendingApiCall}
-                >
-                  {' '}
-                  <i className='material-icons'>close</i> {translate('Cancel')}
-                </button>
-              </div>
-            </div>
-          </Fragment>
-        )}
-      </div>
-    </div>
-    <Modal 
-    visible={modalVisible} 
-    onClickCancel={onClickRemoveCancel}
-    onClickDelete={onClickDeleteAccount}
-    pendingApiCall={pendingApiCallForDelete}
-    title={translate('Delete Account')}
-    message={ 
-      <div>
-        <div>
-          <strong>
-            {translate('Are you sure to delete your account?')}
-          </strong>
+      <div className='card text-center'>
+        <div className='card-header'>
+          <ProfileImage
+            className='rounded-circle shadow'
+            image={image}
+            alt={`${username} profile`}
+            width='200'
+            height='200'
+            tempimage={newImage}
+          />
         </div>
-        <span>{}</span>
+        <div className='card-body'>
+          {!inEditMode && (
+            <Fragment>
+              <h3>
+                {displayName}@{username}
+              </h3>
+              {editable && (
+                <Fragment>
+                  <button
+                    className='btn btn-success d-inline-flex'
+                    onClick={() => setInEditMode(true)}
+                  >
+                    {' '}
+                    <i className='material-icons'>edit</i> {translate('Edit')}
+                  </button>
+                  <div className="pt-2">
+                    <button
+                      className='btn btn-danger d-inline-flex'
+                      onClick={() => setModalVisible(true)}
+                    >
+                      {' '}
+                      <i className='material-icons'>directions_run</i> {translate('Delete Account')}
+                    </button>
+                  </div>
+                </Fragment>
+              )}
+            </Fragment>
+          )}
+          {inEditMode && (
+            <Fragment>
+              <div className=''>
+                <Input
+                  label={translate('Change Display Name')}
+                  defaultValue={displayName}
+                  onChange={(event) => setUpdatedDisplayName(event.target.value)}
+                  disabled={pendingApiCall}
+                  error={displayNameError}
+                />
+                <Input
+                  type='file'
+                  onChange={onChangeFile}
+                  error={imageError}
+                  accept='.jpeg,.jpg,.png'
+                />
+                <div className='mt-3'>
+                  <ButtonWithProgress
+                    className='btn btn-primary d-inline-flex'
+                    onClick={onClickSave}
+                    disabled={pendingApiCall}
+                    pendingApiCall={pendingApiCall}
+                    text={
+                      <Fragment>
+                        {' '}
+                        <i className='material-icons'>save</i> {translate('Save')}
+                      </Fragment>
+                    }
+                  ></ButtonWithProgress>
+                  <button
+                    className='btn btn-danger d-inline-flex ml-2'
+                    onClick={() => setInEditMode(false)}
+                    disabled={pendingApiCall}
+                  >
+                    {' '}
+                    <i className='material-icons'>close</i> {translate('Cancel')}
+                  </button>
+                </div>
+              </div>
+            </Fragment>
+          )}
+        </div>
       </div>
-    }
-    />
+      <Modal
+        visible={modalVisible}
+        onClickCancel={onClickRemoveCancel}
+        onClickDelete={onClickDeleteAccount}
+        pendingApiCall={pendingApiCallForDelete}
+        title={translate('Delete Account')}
+        message={
+          <div>
+            <div>
+              <strong>
+                {translate('Are you sure to delete your account?')}
+              </strong>
+            </div>
+            <span>{}</span>
+          </div>
+        }
+      />
     </Fragment>
   )
 }

@@ -1,33 +1,33 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { format } from 'timeago.js'
 import ProfileImage from './ProfileImage'
 import { useTranslation } from 'react-i18next'
-import { deleteHoax as apiDeleteHoax} from '../api/apiCalls'
+import { deleteHoax as apiDeleteHoax } from '../api/apiCalls'
 import Modal from './Modal'
-import { useState } from 'react'
+
 import { useApiProgress } from '../shared/ApiProgress'
 
 const HoaxView = (props) => {
   const { hoax, onDeleteHoax } = props
-  const { user, content, timestamp, fileAttachment, id:hoaxId } = hoax
+  const { user, content, timestamp, fileAttachment, id: hoaxId } = hoax
   const { username, displayName, image } = user
   const [modalVisible, setModalVisible] = useState(false)
-  const loggedInUsername = useSelector(store=> store.username)
-  const { i18n, t:translate } = useTranslation()
+  const loggedInUsername = useSelector(store => store.username)
+  const { i18n, t: translate } = useTranslation()
   const formatted = format(timestamp, i18n.language)
 
   const ownedByLoggedInUser = loggedInUsername === username
   const pendingApiCall = useApiProgress('delete', `/api/v1/hoaxes/${hoaxId}`, true)
 
-  const onClickDeleteHoax = async()=>{
+  const onClickDeleteHoax = async () => {
     await apiDeleteHoax(hoaxId)
     onDeleteHoax(hoaxId)
   }
 
-  const onClickCancel = () =>{
+  const onClickCancel = () => {
     setModalVisible(false)
   }
 
@@ -50,7 +50,7 @@ const HoaxView = (props) => {
             </Link>
           </div>
           {ownedByLoggedInUser && (
-            <button className="btn btn-delete-link" onClick={()=>{setModalVisible(true)}}>
+            <button className="btn btn-delete-link" onClick={() => { setModalVisible(true) }}>
               <i className="material-icons">delete_outline</i>
             </button>
           )}
@@ -66,7 +66,7 @@ const HoaxView = (props) => {
           </div>
         )}
       </div>
-      <Modal visible={modalVisible} title={translate('Delete Hoax')} onClickDelete={onClickDeleteHoax} onClickCancel={onClickCancel} pendingApiCall={pendingApiCall} message={ 
+      <Modal visible={modalVisible} title={translate('Delete Hoax')} onClickDelete={onClickDeleteHoax} onClickCancel={onClickCancel} pendingApiCall={pendingApiCall} message={
         <div>
           <div>
             <strong>
